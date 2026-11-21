@@ -1,0 +1,92 @@
+{
+  "_note": "Spec §11.2. Hand-calculated and verified (2026-11-21). NEVER change an expected value to match the implementation: if a golden test fails, stop and tell the user.",
+  "EG1": {
+    "title": "Line balancing, LTT, alphabetical ties",
+    "problem": {
+      "kind": "balancing",
+      "unit": "min",
+      "available": "480",
+      "demand": 48,
+      "heuristic": "LTT",
+      "tieBreak": "alpha",
+      "tasks": [
+        { "id": "A", "t": "5", "preds": [] },
+        { "id": "B", "t": "3", "preds": ["A"] },
+        { "id": "C", "t": "4", "preds": ["A"] },
+        { "id": "D", "t": "3", "preds": ["B"] },
+        { "id": "E", "t": "6", "preds": ["C"] },
+        { "id": "F", "t": "2", "preds": ["D", "E"] },
+        { "id": "G", "t": "4", "preds": ["F"] }
+      ]
+    },
+    "expected": {
+      "sumT": "27",
+      "c": "10",
+      "nMin": 3,
+      "stations": [["A", "C"], ["E", "B"], ["D", "F", "G"]],
+      "stationTimes": ["9", "9", "9"],
+      "n": 3,
+      "nOptimal": 3,
+      "efficiency": "9/10",
+      "stationEfficiency": ["9/10", "9/10", "9/10"],
+      "idle": "3"
+    }
+  },
+  "EG2": {
+    "title": "CPM (AON)",
+    "problem": {
+      "kind": "project",
+      "activities": [
+        { "id": "A", "d": "3", "preds": [] },
+        { "id": "B", "d": "4", "preds": [] },
+        { "id": "C", "d": "2", "preds": ["A"] },
+        { "id": "D", "d": "5", "preds": ["A", "B"] },
+        { "id": "E", "d": "3", "preds": ["C", "D"] }
+      ]
+    },
+    "expected": {
+      "duration": "12",
+      "criticalPaths": [["B", "D", "E"]],
+      "totalFloat": { "A": "1", "B": "0", "C": "4", "D": "0", "E": "0" }
+    }
+  },
+  "EG3": {
+    "title": "Johnson, 2 machines",
+    "problem": {
+      "kind": "flowshop",
+      "jobs": [
+        { "id": "J1", "p1": "3", "p2": "6" },
+        { "id": "J2", "p1": "5", "p2": "2" },
+        { "id": "J3", "p1": "1", "p2": "2" },
+        { "id": "J4", "p1": "6", "p2": "6" },
+        { "id": "J5", "p1": "7", "p2": "5" }
+      ]
+    },
+    "expected": {
+      "sequence": ["J3", "J1", "J4", "J5", "J2"],
+      "makespan": "24",
+      "optimalMakespan": "24"
+    }
+  },
+  "EG4": {
+    "title": "PERT, one critical path of three activities",
+    "problem": {
+      "kind": "project",
+      "activities": [
+        { "id": "A", "pert": ["2", "4", "6"], "preds": [] },
+        { "id": "B", "pert": ["3", "5", "13"], "preds": ["A"] },
+        { "id": "C", "pert": ["4", "6", "8"], "preds": ["B"] }
+      ],
+      "deadline": "17"
+    },
+    "expected": {
+      "te": "16",
+      "variance": "11/3",
+      "varianceRounded": "3.667",
+      "sigmaRounded": "1.915",
+      "zRounded": "0.522",
+      "probability": "0.699",
+      "probabilityTolerance": "0.005"
+    }
+  }
+}

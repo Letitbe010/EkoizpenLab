@@ -1,0 +1,22 @@
+{
+  "_note": "Extra cases checked by the oracle (not golden: expected values come only from A = B = oracle). Euskadi OPE 2020, 1508, exercise 6: data transcribed from Azterketa_ariketa adibideak/Fabrikazio_mekanikoaren_antolamendua_eta_proiektuak_eusk.pdf (user still to verify).",
+  "euskadi2020-6": {
+    "problem": {
+      "kind": "balancing",
+      "unit": "min",
+      "available": "480",
+      "demand": 40,
+      "tasks": [
+        { "id": "A", "t": "10", "preds": [] },
+        { "id": "B", "t": "11", "preds": ["A"] },
+        { "id": "C", "t": "5", "preds": ["B"] },
+        { "id": "D", "t": "4", "preds": ["B"] },
+        { "id": "E", "t": "12", "preds": ["A"] },
+        { "id": "F", "t": "3", "preds": ["C", "D"] },
+        { "id": "G", "t": "7", "preds": ["F"] },
+        { "id": "H", "t": "11", "preds": ["E"] },
+        { "id": "I", "t": "3", "preds": ["G", "H"] }
+      ]
+    }
+  }
+}
