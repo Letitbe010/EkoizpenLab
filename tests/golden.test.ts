@@ -1,10 +1,16 @@
 /**
  * Golden cases (spec §11.2). Expected values are hand-calculated; never edit them to match
- * the implementation. Phase 1 covers EG1; EG2–EG4 are added with their solvers (phase 2).
+ * the implementation.
  */
 import { assignHeuristic, metrics, nMin } from '../src/core/balancing';
 import { heuristicByList, optimalStations, validateAssignment } from '../src/core/balancingExact';
-import type { BalancingProblem } from '../src/core/model';
+import { cpm } from '../src/core/cpm';
+import { cpmAlt } from '../src/core/cpmAlt';
+import { bruteForce, johnsonSequence, johnsonSequences, schedule } from '../src/core/johnson';
+import type { BalancingProblem, FlowShopProblem, ProjectProblem } from '../src/core/model';
+import { phiB } from '../src/core/normal';
+import { pert, probabilityByDeadline } from '../src/core/pert';
+import * as R from '../src/core/rational';
 import golden from './golden/golden.json';
 import { S, goldenProblem } from './helpers';
 
@@ -31,5 +37,56 @@ describe('EG1: line balancing (LTT, alphabetical ties)', () => {
     expect(heuristicByList(p, 'LTT', 'alpha')).toEqual(ex.stations);
     expect(validateAssignment(p, ex.stations)).toEqual([]);
     expect(optimalStations(p)).toBe(ex.nOptimal);
+  });
+});
+
+describe('EG2: CPM', () => {
+  const p = goldenProblem<ProjectProblem>('EG2');
+  const ex = golden.EG2.expected;
+  it('solver A: duration, critical path, total floats', () => {
+    const r = cpm(p);
+    expect(S(r.duration)).toBe(ex.duration);
+    expect(r.criticalPaths).toEqual(ex.criticalPaths);
+    expect(Object.fromEntries(r.rows.map((x) => [x.id, S(x.tf)]))).toEqual(ex.totalFloat);
+  });
+  it('solver B: path enumeration and Bellman-Ford agree', () => {
+    const b = cpmAlt(p);
+    expect(S(b.duration)).toBe(ex.duration);
+    expect(b.criticalPaths).toEqual(ex.criticalPaths);
+    expect(Object.fromEntries([...b.tf].map(([k, v]) => [k, S(v)]))).toEqual(ex.totalFloat);
+  });
+});
+
+describe('EG3: Johnson', () => {
+  const p = goldenProblem<FlowShopProblem>('EG3');
+  const ex = golden.EG3.expected;
+  it('solver A: sequence and makespan', () => {
+    expect(johnsonSequence(p)).toEqual(ex.sequence);
+    // J4 (6, 6) is a tie with itself, but it is the last job left: still one sequence
+    expect(johnsonSequences(p)).toEqual([ex.sequence]);
+    expect(S(schedule(p, ex.sequence).makespan)).toBe(ex.makespan);
+  });
+  it('solver B: every permutation, optimum 24', () => {
+    const b = bruteForce(p);
+    expect(S(b.optimal)).toBe(ex.optimalMakespan);
+    expect(b.optimalSequences).toContainEqual(ex.sequence);
+  });
+});
+
+describe('EG4: PERT', () => {
+  const p = goldenProblem<ProjectProblem>('EG4');
+  const ex = golden.EG4.expected;
+  it('Te, σ², σ and P(T ≤ 17)', () => {
+    const r = pert(p);
+    expect(S(r.Te)).toBe(ex.te);
+    expect(S(r.projectVariance)).toBe(ex.variance);
+    expect(R.toFixed(r.projectVariance, 3)).toBe(ex.varianceRounded);
+    expect(r.sigma.toFixed(3)).toBe(ex.sigmaRounded);
+    const pr = probabilityByDeadline(r.Te, r.projectVariance, R.parse(golden.EG4.problem.deadline));
+    expect(pr.z.toFixed(3)).toBe(ex.zRounded);
+    const tol = Number(ex.probabilityTolerance);
+    expect(Math.abs(pr.p - Number(ex.probability))).toBeLessThan(tol);
+    expect(Math.abs(pr.pTable - Number(ex.probability))).toBeLessThan(tol);
+    expect(Math.abs(phiB(pr.z) - pr.p)).toBeLessThan(1e-10);
   });
 });

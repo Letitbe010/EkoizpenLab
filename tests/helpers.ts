@@ -1,5 +1,5 @@
 import fc from 'fast-check';
-import type { BalancingProblem, Task } from '../src/core/model';
+import type { BalancingProblem, FlowShopProblem, ProjectProblem, Task } from '../src/core/model';
 import * as R from '../src/core/rational';
 import type { ProblemJson } from '../src/core/serialize';
 import { problemFromJson } from '../src/core/serialize';
@@ -38,3 +38,35 @@ export const arbBalancing = (maxTasks = 10): fc.Arbitrary<BalancingProblem> =>
       // available = (maxT + extra) · demand, so C = maxT + extra (an integer ≥ max t)
       return { kind: 'balancing', unit: 'min', tasks, available: R.q((maxT + extra) * demand), demand } as BalancingProblem;
     });
+
+/** Random AON project: activity i may depend on earlier ones; integer durations 1..10. */
+export const arbProject = (maxActs = 10, withPert = false): fc.Arbitrary<ProjectProblem> =>
+  fc
+    .record({
+      n: fc.integer({ min: 2, max: maxActs }),
+      seed: fc.array(fc.integer({ min: 0, max: 99 }), { minLength: 120, maxLength: 120 }),
+      d: fc.array(fc.tuple(fc.integer({ min: 1, max: 10 }), fc.integer({ min: 0, max: 6 }), fc.integer({ min: 0, max: 6 })), {
+        minLength: maxActs,
+        maxLength: maxActs,
+      }),
+      density: fc.integer({ min: 10, max: 60 }),
+    })
+    .map(({ n, seed, d, density }) => {
+      const names = ids(n);
+      let k = 0;
+      const activities = names.map((id, i) => {
+        const preds = names.slice(0, i).filter(() => seed[k++ % seed.length]! < density);
+        const [m, lo, hi] = d[i]!;
+        return withPert
+          ? { id, preds, pert: [R.q(Math.max(1, m - lo)), R.q(m), R.q(m + hi)] as [R.Rational, R.Rational, R.Rational] }
+          : { id, preds, d: R.q(m) };
+      });
+      return { kind: 'project', activities } as ProjectProblem;
+    });
+
+/** Random 2-machine flow shop, 2..7 jobs, times 1..9 (ties are frequent on purpose). */
+export const arbFlowShop = (maxJobs = 7): fc.Arbitrary<FlowShopProblem> =>
+  fc.array(fc.tuple(fc.integer({ min: 1, max: 9 }), fc.integer({ min: 1, max: 9 })), { minLength: 2, maxLength: maxJobs }).map((js) => ({
+    kind: 'flowshop',
+    jobs: js.map(([a, b], i) => ({ id: `J${i + 1}`, p1: R.q(a), p2: R.q(b) })),
+  }));
