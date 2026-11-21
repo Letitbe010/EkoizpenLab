@@ -12,7 +12,8 @@ Web: https://letitbe010.github.io/EkoizpenLab/
 npm install
 npm run dev
 npm test
-npm run oracle:py   # Python oracle (pip install -r tools/oracle/requirements.txt)
+npm run oracle:py   # Python oracle: needs networkx + scipy (pip install -r tools/oracle/requirements.txt,
+                    # e.g. in tools/oracle/.venv and run with that interpreter)
 ```
 
 Lizentzia / Licencia: kodea MIT; edukia CC BY-SA 4.0 (ikus `LICENSE`).

@@ -8,7 +8,8 @@
  *                (user decision 2026-11-21)
  *   critical = TF = 0; there can be more than one critical path.
  *
- * Event times of the AOA view are derived from these values (eventTimes).
+ * Event times of the AOA view (Madrid 2022-7 "Early y Last para cada nudo") will be derived
+ * from these values in phase 3 (grader, solution); not implemented yet.
  */
 import { successors, topoOrder, validateDag } from './dag';
 import type { Activity, ProjectProblem } from './model';
