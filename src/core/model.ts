@@ -5,7 +5,7 @@
  */
 import type { Rational } from './rational';
 
-export type TimeUnit = 'min' | 's';
+export type TimeUnit = 'min' | 's' | 'h';
 
 export interface Task {
   id: string;
@@ -82,8 +82,20 @@ export type AskKind =
 export interface Ask {
   id: string;
   kind: AskKind;
-  /** Extra parameters of the ask (e.g. which station's efficiency). */
-  params?: Record<string, string | number>;
+  /** efficiency: the whole line (default) or one station. */
+  scope?: 'line' | 'station';
+  /** efficiency of one station: 1-based index or the last one. */
+  station?: number | 'last';
+  /** criticalPath with several critical paths: give all of them (default) or any one. */
+  criticalMode?: 'all' | 'any';
+  /** pert: which result is asked. */
+  pertWhat?: 'te' | 'variance' | 'sigma' | 'probability' | 'deadline';
+  /** pert probability: P(T ≤ t) for this t. */
+  t?: Rational;
+  /** pert deadline: the t with P(T ≤ t) = prob (0…1). */
+  prob?: number;
+  /** johnson: which result is asked. */
+  johnsonWhat?: 'sequence' | 'makespan' | 'idle';
 }
 
 export interface Exercise {
@@ -97,4 +109,6 @@ export interface Exercise {
   asks: Ask[];
   weights: Record<string, number>;
   text: { eu: string; es: string };
+  /** pool entries: 'review-needed' until the user approves them (spec §9.1) */
+  review?: 'review-needed' | 'approved';
 }
