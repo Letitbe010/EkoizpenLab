@@ -44,13 +44,13 @@ function load(src: ExerciseSource): Loaded {
 
 const STEPS = ['steps.statement', 'steps.solve', 'steps.grade', 'steps.solution'] as const;
 
-function Figures({ ex, answers, result }: { ex: Exercise; answers: Record<string, Answer>; result: GradeResult }) {
+export function Figures({ ex, answers, result }: { ex: Exercise; answers: Record<string, Answer>; result?: GradeResult }) {
   const { t } = useT();
   const p = ex.problem;
   const sol = solve(p);
   if (p.kind === 'balancing' && sol.kind === 'balancing') {
     const pr = ex.asks.find((a) => a.kind === 'precedence');
-    const prRes = pr ? result.asks.find((r) => r.id === pr.id) : undefined;
+    const prRes = pr && result ? result.asks.find((r) => r.id === pr.id) : undefined;
     const marks = new Map<string, EdgeMark>();
     for (const it of prRes?.items ?? []) {
       const [a, b] = it.part.split('→');

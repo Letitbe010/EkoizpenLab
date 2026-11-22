@@ -39,6 +39,8 @@ describe('ui: routes', () => {
       { name: 'generated', template: 'cpm', level: 3, seed: 42 },
       { name: 'pool', id: 'ope-euskadi-2020-6' },
       { name: 'soon', section: 'teoria' },
+      { name: 'worked' },
+      { name: 'workedItem', id: 'gantt' },
       { name: 'start' },
     ] as const)
       expect(parseHash(hrefOf(r))).toEqual(r);

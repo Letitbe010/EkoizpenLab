@@ -405,3 +405,5 @@ button.station .load { font-size: 12.5px; color: var(--muted); }
 /* grid/flex children must be allowed to shrink so wide tables scroll inside their card */
 .asks > *, .ask, .figs, .exercise, .main main > * { min-width: 0; }
 .ask .scroll { max-width: 100%; }
+.steps, .wsteps, .wstep, .diagram, .figs > * { min-width: 0; max-width: 100%; }
+.diagram > .scroll { max-width: 100%; }

@@ -58,7 +58,8 @@ export function PrecedenceGraph({ nodes, sub, edges, critical, label }: GraphPro
   const R = 20;
   return (
     <figure className="diagram">
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3 }}>
+      <div className="scroll">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3, minWidth: Math.min(W * 0.75, 560) }}>
         <defs>
           {(['normal', 'ok', 'missing', 'extra', 'critical'] as EdgeMark[]).map((m) => (
             <marker key={m} id={`arr-${m}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -103,6 +104,7 @@ export function PrecedenceGraph({ nodes, sub, edges, critical, label }: GraphPro
           );
         })}
       </svg>
+      </div>
     </figure>
   );
 }
@@ -136,7 +138,8 @@ export function CpmNetwork({ boxes, label }: { boxes: CpmBox[]; label: string })
   const crit = new Set(boxes.filter((b) => b.critical).map((b) => b.id));
   return (
     <figure className="diagram">
-      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3 }}>
+      <div className="scroll">
+      <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3, minWidth: Math.min(W * 0.85, 620) }}>
         <defs>
           {(['normal', 'critical'] as const).map((m) => (
             <marker key={m} id={`carr-${m}`} viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
@@ -170,6 +173,7 @@ export function CpmNetwork({ boxes, label }: { boxes: CpmBox[]; label: string })
           );
         })}
       </svg>
+      </div>
       <figcaption className="legend">
         <span>ES | id | EF</span> <span>LS | d | LF</span> <span className="lg critical">━ {t('legend.critical')}</span>
       </figcaption>

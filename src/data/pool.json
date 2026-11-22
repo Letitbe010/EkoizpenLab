@@ -1546,5 +1546,133 @@
    "es": "7 trabajos deben pasar por dos máquinas en el mismo orden: primero M1 y después M2. En la tabla, los tiempos de cada trabajo (h). Usa la regla de Johnson. Tiempo ocioso de una máquina = makespan − suma de los tiempos en esa máquina."
   },
   "review": "review-needed"
+ },
+ {
+  "id": "balancing-2-5",
+  "origin": "generated",
+  "seed": 5,
+  "difficulty": 2,
+  "problem": {
+   "kind": "balancing",
+   "unit": "min",
+   "available": "480",
+   "demand": 32,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "2",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "10",
+     "preds": []
+    },
+    {
+     "id": "C",
+     "t": "4",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "4",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "3",
+     "preds": [
+      "C"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "7",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "12",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "H",
+     "t": "4",
+     "preds": [
+      "D",
+      "F",
+      "G"
+     ]
+    },
+    {
+     "id": "I",
+     "t": "2",
+     "preds": [
+      "H"
+     ]
+    }
+   ],
+   "heuristic": "RPW",
+   "tieBreak": "alpha"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e",
+    "kind": "stationTimes"
+   },
+   {
+    "id": "f",
+    "kind": "idle"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e": 0.1,
+   "f": 0.1,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Muntaketa-lerro batek 32 unitate ekoiztu behar ditu 8 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"pisu posizional handiena lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 32 unidades en un turno de 8 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «mayor peso posicional primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
  }
 ]

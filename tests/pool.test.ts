@@ -14,11 +14,13 @@ import { perfectAnswers } from './helpers';
 const OPE_FILE = 'src/data/pool-ope.json';
 const POOL_FILE = 'src/data/pool.json';
 const PIN_SEED = 1;
+/** Extra pinned exercises used by worked exercises (spec §15.3): balancing L2 with RPW. */
+const EXTRA_PINS: { t: TemplateId; lv: 1 | 2 | 3; seed: number }[] = [{ t: 'balancing', lv: 2, seed: 5 }];
 
 const ope: Exercise[] = (JSON.parse(readFileSync(OPE_FILE, 'utf8')) as ExerciseJson[]).map(exerciseFromJson);
 
 function buildPool(): ExerciseJson[] {
-  const pinned = TEMPLATES.flatMap((t) => LEVELS[t].map((lv) => generate(t, PIN_SEED, lv).exercise)).map((ex) =>
+  const pinned = [...TEMPLATES.flatMap((t) => LEVELS[t].map((lv) => generate(t, PIN_SEED, lv).exercise)), ...EXTRA_PINS.map((p) => generate(p.t, p.seed, p.lv).exercise)].map((ex) =>
     exerciseToJson({ ...ex, review: 'review-needed' }),
   );
   return [...ope.map(exerciseToJson), ...pinned];
