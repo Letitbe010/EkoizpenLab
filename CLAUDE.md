@@ -5,6 +5,8 @@ Espezifikazio osoa: `../EkoizpenLab_argibideak.md`.
 - Aritmetika: arrazional zehatzak (src/core/rational.ts). N_min = goiko osoa. Efizientziaren oinarria (C edo lepo-botila) ariketan esplizitu.
 - Esleipenak: heuristikoa + berdinketa-araua badago, emaitza deterministikoa; bestela edozein esleipen baliodun. Oinordekoak iragankorrak dira (oinordeko gehien eta RPW; erabiltzaileak onartua, 2026-11-22).
 - Johnson: makina baten denbora hila = makespan − bere prozesatze-denboren batura (M2: hasierako itxaronaldia barne; M1: amaierakoa barne). Ebazpenean esplizitu (erabiltzaileak onartua, 2026-11-22).
+- Esleipen-araurik gabe, erreferentziako erantzuna lanpostu kopuru optimoko esleipen bat da (B ebazlea, A-k egiaztatua), ez LTT-rena (2026-11-22).
+- Berdinketa-araua alfabetikoa ez denean, enuntziatuak azken irizpidea (ordena alfabetikoa) aipatzen du; LTT-rekin ez da "laburrena" araua erabiltzen.
 - Lanpostuen araberako eskaerak (lanpostuen denborak, denbora hila, azken lanpostuaren efizientzia) erabiltzailearen esleipenetik zuzentzen dira, baliozkoa bada (erabiltzaileak erabakia, 2026-11-21).
 - CPM: jarduerako ES/EF/LS/LF zuzentzen dira (AON); AOA gertaeren denborak horietatik eratorrita erakusten dira. Oinordekorik gabeko jardueren holgura librea = T − EF.
 - Johnson: puntu osoa arauarekin bateragarriak diren sekuentziei; optimoa baina araua betetzen ez duena → partziala, oharrarekin.

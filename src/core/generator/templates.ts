@@ -91,7 +91,8 @@ function balancingProblem(r: Rng, level: 1 | 2 | 3): BalancingProblem {
   const c = r.pick(cands);
   const heuristics: (Heuristic | undefined)[] = level === 1 ? ['LTT'] : level === 2 ? ['RPW', 'mostFollowers'] : ['LTT', 'RPW', 'mostFollowers', undefined];
   const heuristic = r.pick(heuristics);
-  const tieBreak: TieBreak = level === 3 ? r.pick(['alpha', 'shortest'] as const) : 'alpha';
+  // with LTT, tied tasks have equal times: "shortest" would never decide, so it is not drawn
+  const tieBreak: TieBreak = level === 3 && heuristic && heuristic !== 'LTT' ? r.pick(['alpha', 'shortest'] as const) : 'alpha';
   return {
     kind: 'balancing',
     unit,

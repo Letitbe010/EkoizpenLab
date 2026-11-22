@@ -1,6 +1,7 @@
 import { generate, LEVELS, rebuild, signature, TEMPLATES, verifyExercise, type TemplateId } from '../src/core/generator';
 import { gradeExercise } from '../src/core/grader';
 import { exerciseFromJson, exerciseToJson } from '../src/core/serialize';
+import { solve } from '../src/core/solve';
 import { perfectAnswers } from './helpers';
 
 const J = (e: Parameters<typeof exerciseToJson>[0]): string => JSON.stringify(exerciseToJson(e));
@@ -49,6 +50,27 @@ describe(`generator: ${N} exercises verified (spec §12, phase 4)`, () => {
     for (let s = 0; s < 30; s++) {
       const b = generate('balancing', s, 1).exercise;
       expect(b.problem.kind === 'balancing' && b.problem.heuristic).toBe('LTT');
+      const c = solve(generate('cpm', s, 3).exercise.problem);
+      expect(c.kind === 'project' && c.cpm.criticalPaths.length).toBe(2);
+      const j = solve(generate('johnson', s, 1).exercise.problem);
+      expect(j.kind === 'flowshop' && j.johnsonSequences.length).toBe(1);
     }
+  });
+
+  it('tie rules: never "shortest" with LTT; a non-alphabetical rule names the alphabetical fallback', () => {
+    let shortest = 0;
+    for (let s = 0; s < 300; s++) {
+      for (const t of ['balancing', 'balancingExcess'] as const) {
+        const e = generate(t, s, 3).exercise;
+        if (e.problem.kind !== 'balancing') continue;
+        if (e.problem.heuristic === 'LTT') expect(e.problem.tieBreak ?? 'alpha').toBe('alpha');
+        if (e.problem.tieBreak === 'shortest') {
+          shortest++;
+          expect(e.text.eu).toContain('berdinketak jarraitzen badu, ordena alfabetikoa');
+          expect(e.text.es).toContain('si persiste el empate, orden alfabético');
+        }
+      }
+    }
+    expect(shortest).toBeGreaterThan(0);
   });
 });

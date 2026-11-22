@@ -3,7 +3,7 @@
  * agree; otherwise SolverMismatch is thrown and the exercise must not be shown.
  * Everything is computed from the data shown to the user (the problem itself).
  */
-import { assignHeuristic, metrics, nMin, type BalancingMetrics } from './balancing';
+import { assignHeuristic, cycleTime, metrics, nMin, type BalancingMetrics } from './balancing';
 import { heuristicByList, optimalAssignment, validateAssignment } from './balancingExact';
 import { cpm, type CpmResult } from './cpm';
 import { cpmAlt } from './cpmAlt';
@@ -69,6 +69,11 @@ export function solveBalancing(p: BalancingProblem): BalancingSolution {
   check(validateAssignment(p, heuristicAssignment).length === 0, 'balancing: heuristic assignment is not valid');
   const optimal = optimalAssignment(p);
   check(validateAssignment(p, optimal).length === 0, 'balancing: optimal assignment is not valid');
+  // independent A-side check of the optimal assignment (B built and validated it)
+  const station = new Map(optimal.flatMap((st, k) => st.map((id) => [id, k] as const)));
+  check(station.size === p.tasks.length, 'balancing: optimal assignment misses tasks');
+  check(p.tasks.every((t) => t.preds.every((x) => station.get(x)! <= station.get(t.id)!)), 'balancing: optimal assignment breaks a precedence');
+  check(metrics(p, optimal).stationTimes.every((x) => !R.gt(x, cycleTime(p))), 'balancing: optimal assignment exceeds C');
   const nOptimal = optimal.length;
   const reference = ruleGiven ? heuristicAssignment : optimal;
   const m = metrics(p, reference);

@@ -3,6 +3,7 @@ import { BalancingError, assignHeuristic, checkFeasible, cycleTime, metrics, nMi
 import { heuristicByList, optimalAssignment, optimalStations, validateAssignment } from '../src/core/balancingExact';
 import type { BalancingProblem, Heuristic, TieBreak } from '../src/core/model';
 import * as R from '../src/core/rational';
+import { balancingText } from '../src/core/generator/text';
 import { S, arbBalancing, goldenProblem } from './helpers';
 
 const HEUR: Heuristic[] = ['LTT', 'mostFollowers', 'RPW'];
@@ -158,5 +159,20 @@ describe('balancing: optimal assignment (solver B)', () => {
       }),
       { numRuns: 300 },
     );
+  });
+});
+
+describe('balancing: the statement names the rule the solver applies on double ties', () => {
+  const t = (id: string, x: number, preds: string[] = []) => ({ id, t: R.q(x), preds });
+  it('RPW + shortest: a tie on RPW and on time is broken alphabetically', () => {
+    // B and C: same RPW (4 + 2 = 6 and 4 + 2 = 6) and same time 4 → alphabetical: B first
+    const p: BalancingProblem = {
+      kind: 'balancing', unit: 'min', available: R.q(480), demand: 60, heuristic: 'RPW', tieBreak: 'shortest',
+      tasks: [t('A', 3), t('B', 4, ['A']), t('C', 4, ['A']), t('D', 2, ['B']), t('E', 2, ['C'])],
+    };
+    const { steps } = assignHeuristic(p, 'RPW', 'shortest');
+    const firstTie = steps.find((s) => s.candidates.includes('B') && s.candidates.includes('C'))!;
+    expect(firstTie.chosen).toBe('B');
+    expect(balancingText(p).eu).toContain('berdinketak jarraitzen badu, ordena alfabetikoa');
   });
 });

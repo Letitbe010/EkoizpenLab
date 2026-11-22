@@ -641,8 +641,8 @@
    "h": 0.15
   },
   "text": {
-   "eu": "Muntaketa-lerro batek 280 unitate ekoiztu behar ditu 7 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (s) eta aurrekotasunak. Esleitu atazak lanpostuei \"oinordeko gehien dituen ataza lehenik\" arauarekin; berdinketan, ataza laburrena. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
-   "es": "Una línea de montaje debe producir 280 unidades en un turno de 7 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (s) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea con más sucesoras primero»; en caso de empate, la tarea más corta. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+   "eu": "Muntaketa-lerro batek 280 unitate ekoiztu behar ditu 7 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (s) eta aurrekotasunak. Esleitu atazak lanpostuei \"oinordeko gehien dituen ataza lehenik\" arauarekin; berdinketan, ataza laburrena; berdinketak jarraitzen badu, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 280 unidades en un turno de 7 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (s) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea con más sucesoras primero»; en caso de empate, la tarea más corta; si persiste el empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
   },
   "review": "review-needed"
  },

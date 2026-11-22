@@ -23,10 +23,13 @@ export function balancingText(p: BalancingProblem): { eu: string; es: string } {
   const hours = R.toNumber(p.available) / (p.unit === 's' ? 3600 : 60);
   const u = p.unit === 's' ? 's' : 'min';
   const h = fmtNum(hours);
+  const tie = p.tieBreak ?? 'alpha';
+  // the last fallback of the solver is always the alphabetical order: say so (spec §3)
+  const fallback = tie === 'alpha' ? { eu: '', es: '' } : { eu: '; berdinketak jarraitzen badu, ordena alfabetikoa', es: '; si persiste el empate, orden alfabético' };
   const rule = p.heuristic
     ? {
-        eu: ` Esleitu atazak lanpostuei "${HEUR[p.heuristic].eu}" arauarekin; berdinketan, ${TIE[p.tieBreak ?? 'alpha'].eu}.`,
-        es: ` Asigna las tareas a las estaciones con la regla «${HEUR[p.heuristic].es}»; en caso de empate, ${TIE[p.tieBreak ?? 'alpha'].es}.`,
+        eu: ` Esleitu atazak lanpostuei "${HEUR[p.heuristic].eu}" arauarekin; berdinketan, ${TIE[tie].eu}${fallback.eu}.`,
+        es: ` Asigna las tareas a las estaciones con la regla «${HEUR[p.heuristic].es}»; en caso de empate, ${TIE[tie].es}${fallback.es}.`,
       }
     : {
         eu: ' Esleipenerako araurik ez da finkatzen: edozein esleipen baliodun onartzen da, lanpostu kopuru minimoarekin.',
