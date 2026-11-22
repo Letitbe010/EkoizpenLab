@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
 import { type Lang, LangContext, translate } from '../i18n';
+import { PracticeExercise } from './PracticeExercise';
+import { PracticeHome } from './PracticeHome';
+import { type Route, useRoute } from './router';
 import { loadLang, saveLang } from './store';
 
 type Section = 'home' | 'teoria' | 'ebatziak' | 'praktika' | 'aurrerapena';
@@ -14,27 +17,15 @@ const NAV: { key: string; section: Exclude<Section, 'home'>; icon: string }[] = 
 const TOPICS = ['balancing', 'cpm', 'pert', 'johnson'] as const;
 const STEPS = ['theory', 'worked', 'practice', 'exam'] as const;
 
-function parseHash(): Section {
-  const s = window.location.hash.replace(/^#\/?/, '').split('/')[0] ?? '';
-  return (NAV.find((n) => n.section === s)?.section ?? 'home') as Section;
-}
-
-function useSection(): Section {
-  const [s, setS] = useState<Section>(parseHash);
-  useEffect(() => {
-    const on = () => setS(parseHash());
-    window.addEventListener('hashchange', on);
-    return () => window.removeEventListener('hashchange', on);
-  }, []);
-  return s;
-}
+const sectionOf = (r: Route): Section => (r.name === 'start' ? 'home' : r.name === 'soon' ? r.section : 'praktika');
 
 const COMMIT = (import.meta.env.VITE_COMMIT as string | undefined)?.slice(0, 7) ?? 'dev';
-const VERSION = 'v0.4.0';
+const VERSION = 'v0.5.0';
 
 export function App() {
   const [lang, setLang] = useState<Lang>(loadLang);
-  const section = useSection();
+  const route = useRoute();
+  const section = sectionOf(route);
   const t = (k: string, v?: Record<string, string | number>) => translate(lang, k, v);
   useEffect(() => {
     document.documentElement.lang = lang;
@@ -84,7 +75,12 @@ export function App() {
             </div>
           </header>
           <main>
-            {section === 'home' ? (
+            {route.name === 'practice' && <PracticeHome />}
+            {route.name === 'generated' && (
+              <PracticeExercise key={`${route.template}-${route.level}-${route.seed}`} source={{ kind: 'generated', template: route.template, level: route.level, seed: route.seed }} />
+            )}
+            {route.name === 'pool' && <PracticeExercise key={route.id} source={{ kind: 'pool', id: route.id }} />}
+            {route.name === 'start' && (
               <section className="card">
                 <h1>{t('home.title')}</h1>
                 <p className="lead">{t('home.lead')}</p>
@@ -103,9 +99,15 @@ export function App() {
                     </div>
                   ))}
                 </div>
-                <p className="note warn">{t('status.wip')}</p>
+                <p className="note">{t('status.wip')}</p>
+                <div className="actions">
+                  <a className="btn primary" href="#/praktika">
+                    {t('home.go')}
+                  </a>
+                </div>
               </section>
-            ) : (
+            )}
+            {route.name === 'soon' && (
               <section className="card">
                 <h1>{t(NAV.find((n) => n.section === section)!.key)}</h1>
                 <p className="note">{t('nav.soon')}</p>

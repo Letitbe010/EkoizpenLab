@@ -338,3 +338,70 @@ ol.path li::before { content: counter(step); display: inline-flex; align-items: 
 .topics { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 16px; }
 .topic { border: 1px solid var(--line); border-radius: 12px; padding: 4px 14px 10px; background: var(--surface); }
 .topic p { margin: 0; color: var(--text2); font-size: 15px; }
+
+/* ---------- EkoizpenLab phase 5: diagrams and editors ---------- */
+:root { --critical: #c62828; --cline: #e07000; --slack: #c9d6e6; --task: #6b7f99;
+  --st0: #dbe8fb; --st1: #e3f4ea; --st2: #fdf0d9; --st3: #f3e3f6; --st4: #e0f2f3; --st5: #f7e1e1; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --critical: #ff7b7b; --cline: #ffab4d; --slack: #3a4a5e; --task: #8ea3bd;
+  --st0: #24364f; --st1: #1f3b2e; --st2: #43361d; --st3: #3a2a40; --st4: #1d3a3c; --st5: #432526; } }
+:root[data-theme="dark"] { --critical: #ff7b7b; --cline: #ffab4d; --slack: #3a4a5e; --task: #8ea3bd;
+  --st0: #24364f; --st1: #1f3b2e; --st2: #43361d; --st3: #3a2a40; --st4: #1d3a3c; --st5: #432526; }
+.scroll { overflow-x: auto; max-width: 100%; }
+.dtable td.l { text-align: left; }
+.muted { color: var(--muted); }
+a.btn { display: inline-flex; align-items: center; min-height: 44px; padding: 8px 16px; border-radius: 10px; text-decoration: none; border: 1px solid var(--line); color: var(--ink); }
+a.btn.primary { background: var(--ink); color: var(--card); border-color: var(--ink); }
+.figs { margin-top: 18px; }
+.figs h3 { margin: 18px 0 6px; }
+.diagram { margin: 6px 0; }
+.diagram svg { width: 100%; height: auto; display: block; font-family: inherit; }
+.diagram text { fill: var(--ink); font-size: 13px; }
+.diagram .nid { font-weight: 700; font-size: 14px; }
+.diagram .nsub { fill: var(--muted); font-size: 11.5px; }
+.node circle { fill: var(--surface); stroke: var(--task); stroke-width: 1.6; }
+.node.critical circle { stroke: var(--critical); stroke-width: 2.4; }
+.edge { stroke: var(--task); stroke-width: 1.6; fill: none; }
+.edge.ok { stroke: var(--ok); stroke-width: 2.2; }
+.edge.missing { stroke: var(--bad); stroke-dasharray: 5 4; stroke-width: 2.2; }
+.edge.extra { stroke: var(--bad); stroke-width: 2.2; }
+.edge.critical { stroke: var(--critical); stroke-width: 2.6; }
+.edge-head { fill: var(--task); }
+.edge-head.ok { fill: var(--ok); } .edge-head.missing, .edge-head.extra { fill: var(--bad); } .edge-head.critical { fill: var(--critical); }
+.box rect { fill: var(--surface); stroke: var(--task); stroke-width: 1.4; }
+.box line { stroke: var(--line); }
+.box.critical rect { stroke: var(--critical); stroke-width: 2.6; }
+.st rect { stroke: var(--task); stroke-width: 1; }
+.st.user rect { stroke-dasharray: 4 3; stroke-width: 1.6; }
+.st0 rect { fill: var(--st0); } .st1 rect { fill: var(--st1); } .st2 rect { fill: var(--st2); }
+.st3 rect { fill: var(--st3); } .st4 rect { fill: var(--st4); } .st5 rect { fill: var(--st5); }
+.st text { font-size: 12.5px; font-weight: 600; }
+.stlbl { fill: var(--muted) !important; }
+.stload { font-size: 11.5px !important; fill: var(--text2) !important; }
+.axis, .grid { stroke: var(--line); }
+.cline { stroke: var(--cline); stroke-width: 2; stroke-dasharray: 7 5; }
+.clbl { fill: var(--cline) !important; font-weight: 700; }
+.tick { fill: var(--muted) !important; font-size: 11px !important; }
+.gbar rect { fill: var(--task); }
+.gbar text { fill: #fff !important; font-size: 11.5px !important; font-weight: 600; }
+.gbar.critical rect { fill: var(--critical); }
+.gbar.slack rect { fill: var(--slack); }
+.gbar.idle rect { fill: none; stroke: var(--muted); stroke-dasharray: 3 3; }
+.lg.critical { color: var(--critical); } .lg.ok { color: var(--ok); } .lg.missing, .lg.extra { color: var(--bad); }
+.lg.slack { color: var(--slack); } .lg.cline { color: var(--cline); } .lg.idle { color: var(--muted); }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin: 6px 0; }
+.chips button small { color: var(--muted); margin-left: 2px; }
+.chips button.sel small { color: var(--card); }
+button.placed { background: var(--soft); }
+.stations { list-style: none; padding: 0; margin: 8px 0; display: grid; gap: 6px; }
+.stations li { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; border: 1px dashed var(--line); border-radius: 10px; padding: 6px; }
+button.station { display: flex; flex-direction: column; align-items: flex-start; min-width: 8.5em; }
+button.station .load { font-size: 12.5px; color: var(--muted); }
+.seq { font-weight: 700; font-size: 17px; margin: 6px 0; }
+.cpm-input td { padding: 2px; }
+.cpm-input input { width: 4.2em; font: inherit; font-size: 16px; padding: 6px; border: 1px solid var(--muted); border-radius: 6px; min-height: 40px; background: var(--surface); color: var(--ink); text-align: right; }
+.cpm-input td.correct input { border-color: var(--ok); background: var(--okbg); }
+.cpm-input td.wrong input { border-color: var(--bad); background: var(--badbg); }
+.cpm-input td.invalid input, .cpm-input td.missing input { border-color: var(--warn); background: var(--warnbg); }
+/* grid/flex children must be allowed to shrink so wide tables scroll inside their card */
+.asks > *, .ask, .figs, .exercise, .main main > * { min-width: 0; }
+.ask .scroll { max-width: 100%; }

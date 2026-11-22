@@ -51,6 +51,6 @@ describe('pool', () => {
     const lines = ope.map((e) => `${e.id}: ${JSON.stringify(solve(e.problem), (_k, v) => (typeof v === 'bigint' ? v.toString() : v))}`);
     mkdirSync('tools/oracle/out', { recursive: true }); // gitignored: absent in CI
     writeFileSync('tools/oracle/out/ope-solutions.txt', lines.join('\n') + '\n');
-    expect(ope.length).toBe(2);
+    expect(ope.length).toBe(4);
   });
 });

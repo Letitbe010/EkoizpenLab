@@ -272,6 +272,189 @@
   "review": "review-needed"
  },
  {
+  "id": "spec-eg1",
+  "origin": "adapted",
+  "sourceNote": "EkoizpenLab-en argibideetako EG1 golden kasua (§11.2), eskuz kalkulatua.",
+  "difficulty": 1,
+  "problem": {
+   "kind": "balancing",
+   "unit": "min",
+   "available": "480",
+   "demand": 48,
+   "heuristic": "LTT",
+   "tieBreak": "alpha",
+   "tasks": [
+    {
+     "id": "A",
+     "t": "5",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "3",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "C",
+     "t": "4",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "3",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "6",
+     "preds": [
+      "C"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "2",
+     "preds": [
+      "D",
+      "E"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "4",
+     "preds": [
+      "F"
+     ]
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e",
+    "kind": "stationTimes"
+   },
+   {
+    "id": "f",
+    "kind": "idle"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e": 0.1,
+   "f": 0.1,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Lerro batek 48 unitate ekoiztu behar ditu 8 orduko txandan. Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"ataza luzeena lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea debe producir 48 unidades en un turno de 8 horas. En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea más larga primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "spec-eg2",
+  "origin": "adapted",
+  "sourceNote": "EkoizpenLab-en argibideetako EG2 golden kasua (§11.2), eskuz kalkulatua.",
+  "difficulty": 1,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "d": "3"
+    },
+    {
+     "id": "B",
+     "preds": [],
+     "d": "4"
+    },
+    {
+     "id": "C",
+     "preds": [
+      "A"
+     ],
+     "d": "2"
+    },
+    {
+     "id": "D",
+     "preds": [
+      "A",
+      "B"
+     ],
+     "d": "5"
+    },
+    {
+     "id": "E",
+     "preds": [
+      "C",
+      "D"
+     ],
+     "d": "3"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "cpmTable"
+   },
+   {
+    "id": "b",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "c",
+    "kind": "duration"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.3,
+   "c": 0.2
+  },
+  "text": {
+   "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
+   "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
+  },
+  "review": "review-needed"
+ },
+ {
   "id": "balancing-1-1",
   "origin": "generated",
   "seed": 1,

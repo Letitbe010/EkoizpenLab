@@ -11,26 +11,107 @@
       "available": "480",
       "demand": 40,
       "tasks": [
-        { "id": "A", "t": "10", "preds": [] },
-        { "id": "B", "t": "11", "preds": ["A"] },
-        { "id": "C", "t": "5", "preds": ["B"] },
-        { "id": "D", "t": "4", "preds": ["B"] },
-        { "id": "E", "t": "12", "preds": ["A"] },
-        { "id": "F", "t": "3", "preds": ["C", "D"] },
-        { "id": "G", "t": "7", "preds": ["F"] },
-        { "id": "H", "t": "11", "preds": ["E"] },
-        { "id": "I", "t": "3", "preds": ["G", "H"] }
+        {
+          "id": "A",
+          "t": "10",
+          "preds": []
+        },
+        {
+          "id": "B",
+          "t": "11",
+          "preds": [
+            "A"
+          ]
+        },
+        {
+          "id": "C",
+          "t": "5",
+          "preds": [
+            "B"
+          ]
+        },
+        {
+          "id": "D",
+          "t": "4",
+          "preds": [
+            "B"
+          ]
+        },
+        {
+          "id": "E",
+          "t": "12",
+          "preds": [
+            "A"
+          ]
+        },
+        {
+          "id": "F",
+          "t": "3",
+          "preds": [
+            "C",
+            "D"
+          ]
+        },
+        {
+          "id": "G",
+          "t": "7",
+          "preds": [
+            "F"
+          ]
+        },
+        {
+          "id": "H",
+          "t": "11",
+          "preds": [
+            "E"
+          ]
+        },
+        {
+          "id": "I",
+          "t": "3",
+          "preds": [
+            "G",
+            "H"
+          ]
+        }
       ]
     },
     "asks": [
-      { "id": "a", "kind": "precedence" },
-      { "id": "b", "kind": "cycleTime" },
-      { "id": "c", "kind": "nMin" },
-      { "id": "d", "kind": "assignment" },
-      { "id": "e1", "kind": "efficiency", "scope": "station", "station": "last" },
-      { "id": "e2", "kind": "efficiency" }
+      {
+        "id": "a",
+        "kind": "precedence"
+      },
+      {
+        "id": "b",
+        "kind": "cycleTime"
+      },
+      {
+        "id": "c",
+        "kind": "nMin"
+      },
+      {
+        "id": "d",
+        "kind": "assignment"
+      },
+      {
+        "id": "e1",
+        "kind": "efficiency",
+        "scope": "station",
+        "station": "last"
+      },
+      {
+        "id": "e2",
+        "kind": "efficiency"
+      }
     ],
-    "weights": { "a": 0.2, "b": 0.1, "c": 0.1, "d": 0.3, "e1": 0.15, "e2": 0.15 },
+    "weights": {
+      "a": 0.2,
+      "b": 0.1,
+      "c": 0.1,
+      "d": 0.3,
+      "e1": 0.15,
+      "e2": 0.15
+    },
     "text": {
       "eu": "Fabrikazio-planta batean ekoizpen-prozesu bat orekatu nahi da, egunean 40 pieza ekoizteko (8 ordu egunean). Taulan, pieza bat ekoizteko atazak, bakoitzaren denbora (min) eta aurretik egin beharreko atazak. Esleipenerako araurik ez da finkatzen: edozein esleipen baliodun onartzen da, lanpostu kopuru minimoarekin. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
       "es": "En una planta de fabricación se quiere equilibrar un proceso de producción para fabricar 40 piezas al día (8 horas al día). En la tabla, las tareas para fabricar una pieza, el tiempo de cada una (min) y las tareas que deben hacerse antes. No se fija regla de asignación: se acepta cualquier asignación válida, con el número mínimo de estaciones. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
@@ -46,28 +127,330 @@
     "problem": {
       "kind": "project",
       "activities": [
-        { "id": "A", "preds": [], "pert": ["4", "6", "8"] },
-        { "id": "B", "preds": ["A"], "pert": ["5", "7", "15"] },
-        { "id": "C", "preds": ["A"], "pert": ["4", "8", "12"] },
-        { "id": "D", "preds": ["B"], "pert": ["15", "20", "25"] },
-        { "id": "E", "preds": ["B"], "pert": ["10", "18", "26"] },
-        { "id": "F", "preds": ["C"], "pert": ["8", "9", "16"] },
-        { "id": "G", "preds": ["E"], "pert": ["4", "8", "12"] },
-        { "id": "H", "preds": ["D", "F"], "pert": ["1", "2", "3"] },
-        { "id": "I", "preds": ["G", "H"], "pert": ["6", "7", "8"] }
+        {
+          "id": "A",
+          "preds": [],
+          "pert": [
+            "4",
+            "6",
+            "8"
+          ]
+        },
+        {
+          "id": "B",
+          "preds": [
+            "A"
+          ],
+          "pert": [
+            "5",
+            "7",
+            "15"
+          ]
+        },
+        {
+          "id": "C",
+          "preds": [
+            "A"
+          ],
+          "pert": [
+            "4",
+            "8",
+            "12"
+          ]
+        },
+        {
+          "id": "D",
+          "preds": [
+            "B"
+          ],
+          "pert": [
+            "15",
+            "20",
+            "25"
+          ]
+        },
+        {
+          "id": "E",
+          "preds": [
+            "B"
+          ],
+          "pert": [
+            "10",
+            "18",
+            "26"
+          ]
+        },
+        {
+          "id": "F",
+          "preds": [
+            "C"
+          ],
+          "pert": [
+            "8",
+            "9",
+            "16"
+          ]
+        },
+        {
+          "id": "G",
+          "preds": [
+            "E"
+          ],
+          "pert": [
+            "4",
+            "8",
+            "12"
+          ]
+        },
+        {
+          "id": "H",
+          "preds": [
+            "D",
+            "F"
+          ],
+          "pert": [
+            "1",
+            "2",
+            "3"
+          ]
+        },
+        {
+          "id": "I",
+          "preds": [
+            "G",
+            "H"
+          ],
+          "pert": [
+            "6",
+            "7",
+            "8"
+          ]
+        }
       ]
     },
     "asks": [
-      { "id": "a", "kind": "pert", "pertWhat": "te" },
-      { "id": "b", "kind": "cpmTable", "fields": ["es", "ef", "ls", "lf"] },
-      { "id": "c", "kind": "criticalPath" },
-      { "id": "d", "kind": "duration" },
-      { "id": "e", "kind": "pert", "pertWhat": "sigma" }
+      {
+        "id": "a",
+        "kind": "pert",
+        "pertWhat": "te"
+      },
+      {
+        "id": "b",
+        "kind": "cpmTable",
+        "fields": [
+          "es",
+          "ef",
+          "ls",
+          "lf"
+        ]
+      },
+      {
+        "id": "c",
+        "kind": "criticalPath"
+      },
+      {
+        "id": "d",
+        "kind": "duration"
+      },
+      {
+        "id": "e",
+        "kind": "pert",
+        "pertWhat": "sigma"
+      }
     ],
-    "weights": { "a": 0.1, "b": 0.3, "c": 0.1, "d": 0.1, "e": 0.1 },
+    "weights": {
+      "a": 0.1,
+      "b": 0.3,
+      "c": 0.1,
+      "d": 0.1,
+      "e": 0.1
+    },
     "text": {
       "eu": "Erakunde batek kontabilitatea eta inbentarioen kontrola automatizatu nahi ditu. Aholkularitzak jardueren taula aurkezten du, hiru estimazioekin (egunak): baikorra (a), probableena (m) eta ezkorra (b). Erabili PERT: te = (a + 4m + b)/6 eta σ² = ((b − a)/6)²; proiektuaren bariantza bide kritikoko bariantzen batura da.",
       "es": "Una organización quiere automatizar su proceso de contabilidad y control de inventarios. La consultoría presenta la tabla de actividades, con tres estimaciones (días): optimista (a), más probable (m) y pesimista (b). Usa PERT: te = (a + 4m + b)/6 y σ² = ((b − a)/6)²; la varianza del proyecto es la suma de las varianzas del camino crítico."
+    },
+    "review": "review-needed"
+  },
+  {
+    "id": "spec-eg1",
+    "origin": "adapted",
+    "sourceNote": "EkoizpenLab-en argibideetako EG1 golden kasua (§11.2), eskuz kalkulatua.",
+    "difficulty": 1,
+    "problem": {
+      "kind": "balancing",
+      "unit": "min",
+      "available": "480",
+      "demand": 48,
+      "heuristic": "LTT",
+      "tieBreak": "alpha",
+      "tasks": [
+        {
+          "id": "A",
+          "t": "5",
+          "preds": []
+        },
+        {
+          "id": "B",
+          "t": "3",
+          "preds": [
+            "A"
+          ]
+        },
+        {
+          "id": "C",
+          "t": "4",
+          "preds": [
+            "A"
+          ]
+        },
+        {
+          "id": "D",
+          "t": "3",
+          "preds": [
+            "B"
+          ]
+        },
+        {
+          "id": "E",
+          "t": "6",
+          "preds": [
+            "C"
+          ]
+        },
+        {
+          "id": "F",
+          "t": "2",
+          "preds": [
+            "D",
+            "E"
+          ]
+        },
+        {
+          "id": "G",
+          "t": "4",
+          "preds": [
+            "F"
+          ]
+        }
+      ]
+    },
+    "asks": [
+      {
+        "id": "a",
+        "kind": "precedence"
+      },
+      {
+        "id": "b",
+        "kind": "cycleTime"
+      },
+      {
+        "id": "c",
+        "kind": "nMin"
+      },
+      {
+        "id": "d",
+        "kind": "assignment"
+      },
+      {
+        "id": "e",
+        "kind": "stationTimes"
+      },
+      {
+        "id": "f",
+        "kind": "idle"
+      },
+      {
+        "id": "g",
+        "kind": "efficiency",
+        "scope": "station",
+        "station": "last"
+      },
+      {
+        "id": "h",
+        "kind": "efficiency"
+      }
+    ],
+    "weights": {
+      "a": 0.2,
+      "b": 0.1,
+      "c": 0.1,
+      "d": 0.3,
+      "e": 0.1,
+      "f": 0.1,
+      "g": 0.15,
+      "h": 0.15
+    },
+    "text": {
+      "eu": "Lerro batek 48 unitate ekoiztu behar ditu 8 orduko txandan. Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"ataza luzeena lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+      "es": "Una línea debe producir 48 unidades en un turno de 8 horas. En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea más larga primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+    },
+    "review": "review-needed"
+  },
+  {
+    "id": "spec-eg2",
+    "origin": "adapted",
+    "sourceNote": "EkoizpenLab-en argibideetako EG2 golden kasua (§11.2), eskuz kalkulatua.",
+    "difficulty": 1,
+    "problem": {
+      "kind": "project",
+      "activities": [
+        {
+          "id": "A",
+          "d": "3",
+          "preds": []
+        },
+        {
+          "id": "B",
+          "d": "4",
+          "preds": []
+        },
+        {
+          "id": "C",
+          "d": "2",
+          "preds": [
+            "A"
+          ]
+        },
+        {
+          "id": "D",
+          "d": "5",
+          "preds": [
+            "A",
+            "B"
+          ]
+        },
+        {
+          "id": "E",
+          "d": "3",
+          "preds": [
+            "C",
+            "D"
+          ]
+        }
+      ]
+    },
+    "asks": [
+      {
+        "id": "a",
+        "kind": "cpmTable"
+      },
+      {
+        "id": "b",
+        "kind": "criticalPath"
+      },
+      {
+        "id": "c",
+        "kind": "duration"
+      }
+    ],
+    "weights": {
+      "a": 0.5,
+      "b": 0.3,
+      "c": 0.2
+    },
+    "text": {
+      "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
+      "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
     },
     "review": "review-needed"
   }
