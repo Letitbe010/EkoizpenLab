@@ -123,6 +123,25 @@ describe('grader: EG1 line balancing', () => {
     }
   });
 
+  it('empty station slots are ignored in the assignment and in the station-dependent asks', () => {
+    const d = { stations: [['A', 'B'], [], ['C', 'D'], ['E', 'F'], ['G']] };
+    const g = gradeExercise(E1, { d, g: { value: '67,5' }, e: { values: ['8', '7', '8', '4'] } });
+    expect(g.asks.find((x) => x.id === 'd')!.score).toBe(0.5);
+    for (const id of ['e', 'g']) {
+      const a = g.asks.find((x) => x.id === id)!;
+      expect(a.status, id).toBe('correct');
+      expect(a.notes[0]!.id).toBe('graded-on-yours');
+    }
+  });
+
+  it('diagnosis 3 with a bottleneck base: computed with C instead', () => {
+    const Eb = ex({ ...eg1, efficiencyBase: 'bottleneck' }, balancingAsks);
+    const d = { stations: [['A', 'B'], ['C', 'D'], ['E', 'F'], ['G']] };
+    expect(one(Eb, { d, g: { value: '84,38' } }, 'g').status).toBe('correct'); // 27 / (4·8)
+    expect(one(Eb, { d, g: { value: '67,5' } }, 'g').items[0]!.diagnosis).toBe('eff-c-base'); // 27 / (4·10)
+    expect(one(Eb, { d, h: { value: '40' } }, 'h').items[0]!.diagnosis).toBe('eff-c-base'); // 4 / 10
+  });
+
   it('station-dependent asks fall back to the reference when the assignment is invalid', () => {
     const g = gradeExercise(E1, { d: { stations: [['A', 'E']] }, g: { value: '90' } });
     const a = g.asks.find((x) => x.id === 'g')!;
@@ -324,7 +343,32 @@ describe('grader: EG3 Johnson', () => {
     }
     expect(half).toBeGreaterThan(0);
   });
+  it('diagnosis 7 on makespan and idle times', () => {
+    // reversed rule J2-J5-J4-J1-J3: M1 ends at 22; M2: 5-7, 12-17, 18-24, 24-30, 30-32 → 32
+    expect(one(E3, { m: { value: '32' } }, 'm').items[0]!.diagnosis).toBe('johnson-reversed');
+    const r = one(E3, { i: { m1: '10', m2: '11' } }, 'i');
+    expect(r.items.map((x) => x.diagnosis)).toEqual(['johnson-reversed', 'johnson-reversed']);
+  });
+
   it('incomplete sequences are invalid', () => {
     expect(one(E3, { s: { sequence: ['J1', 'J2'] } }, 's').status).toBe('invalid');
+  });
+});
+
+// ------------------------------------------------------------------ known limitation (open question)
+
+describe('grader: CPM times with non-integer te (open question to the user)', () => {
+  it('te rounded to 3 decimals and added along a path is NOT accepted (exact grading)', () => {
+    // te(A) = (5 + 4·7 + 13)/6 = 23/3 = 7.667; te(B) = (6 + 4·8 + 14)/6 = 26/3 = 8.667; T = 49/3
+    const p: ProjectProblem = {
+      kind: 'project',
+      activities: [
+        { id: 'A', preds: [], pert: [R.q(5), R.q(7), R.q(13)] },
+        { id: 'B', preds: ['A'], pert: [R.q(6), R.q(8), R.q(14)] },
+      ],
+    };
+    const E = ex(p, [{ id: 'c', kind: 'duration' }]);
+    expect(one(E, { c: { value: '16,333' } }, 'c').status).toBe('correct');
+    expect(one(E, { c: { value: '16,334' } }, 'c').status).toBe('wrong'); // 7,667 + 8,667
   });
 });

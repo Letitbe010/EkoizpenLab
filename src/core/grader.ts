@@ -202,7 +202,8 @@ const unitsHyps = (e: Rational): Hyp<Rational>[] => [
 
 /** The assignment the station-dependent asks are graded on, and the note saying which. */
 function baseAssignment(p: BalancingProblem, sol: BalancingSolution, user?: Answer): { a: Assignment; note: NoteId } {
-  const st = user?.stations;
+  // empty slots are ignored, exactly as in gradeAssignment
+  const st = user?.stations?.filter((s) => s.length > 0);
   if (st && st.length > 0 && validateAssignment(p, st).length === 0) return { a: st, note: 'graded-on-yours' };
   return { a: sol.reference, note: 'graded-on-reference' };
 }

@@ -9,6 +9,7 @@ Espezifikazio osoa: `../EkoizpenLab_argibideak.md`.
 - CPM: jarduerako ES/EF/LS/LF zuzentzen dira (AON); AOA gertaeren denborak horietatik eratorrita erakusten dira. Oinordekorik gabeko jardueren holgura librea = T − EF.
 - Johnson: puntu osoa arauarekin bateragarriak diren sekuentziei; optimoa baina araua betetzen ez duena → partziala, oharrarekin.
 - PERT: bariantzak batu, ez desbiderapenak. Bide kritiko anitzak onartu.
+- Zuzentzailearen tolerantziak (erabiltzaileak onartuak, 2026-11-22): denborak zatiki zehatz gisa edo erabiltzailearen hamartarretara biribilduta (≥ 2 hamartar), s/min/h unitateak; efizientziak ±0,1 puntu portzentual; PERT te, σ², σ ±0,0005; probabilitatea ±0,005; epea ±max(0,01·σ; 0,005). Ez dago emaitza kateaturik, lanpostuen araberako eskaeretan izan ezik. Puntu partziala 0,5: esleipena baliozkoa baina araua jarraitu gabe; araurik gabe baliozkoa baina N > N optimoa; Johnson-en sekuentzia optimoa baina araua jarraitu gabe.
 - Bi ebazle independente (A eta B) + Python orakulua. Bat ez badatoz → ariketa ez da erakusten.
 - Erantzun zuzena erakutsitako datuetatik kalkulatzen da beti.
 - Kanpoko iturrien soluzioak ez dira inoiz egiatzat hartzen: beti berriz ebatzi.
