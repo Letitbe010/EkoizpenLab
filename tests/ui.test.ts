@@ -66,9 +66,9 @@ describe('ui: titles, labels and solution texts of every pool and template exerc
     const t = (k: string, v?: Record<string, string | number>) => translate(lang, k, v);
     it(`${lang}: no missing key, no NaN / undefined / unfilled placeholder`, () => {
       for (const ex of exercises) {
-        const texts = [exerciseTitle(ex, t), ...ex.asks.map((a) => askLabel(a, t)), ...ex.asks.flatMap((a) => solutionLines(ex, a, t))];
+        const texts = [exerciseTitle(ex, t), ...(ex.origin !== 'generated' ? [t(`poolNote.${ex.id}`)] : []), ...ex.asks.map((a) => askLabel(a, t)), ...ex.asks.flatMap((a) => solutionLines(ex, a, t))];
         for (const s of texts) {
-          expect(s, ex.id).not.toMatch(/NaN|undefined|\{[a-z]+\}|^(ask|pool|tpl|sol|heur|tie)\./);
+          expect(s, ex.id).not.toMatch(/NaN|undefined|\{[a-z]+\}|^(ask|pool|poolNote|tpl|sol|heur|tie)\./);
           expect(s.length, ex.id).toBeGreaterThan(0);
         }
       }

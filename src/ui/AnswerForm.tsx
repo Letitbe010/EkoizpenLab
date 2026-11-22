@@ -11,6 +11,7 @@ import { useState } from 'react';
 import { CPM_FIELDS, type Answer, type AskResult, type CpmField, type ItemResult } from '../core/grader';
 import type { Ask, Exercise } from '../core/model';
 import * as R from '../core/rational';
+import { solve } from '../core/solve';
 import { useT } from '../i18n';
 import { PrecedenceGraph } from './charts/Diagrams';
 import { askLabel, letter } from './describe';
@@ -39,7 +40,8 @@ function partLabel(part: string, t: T): string {
   return part;
 }
 
-export function Feedback({ res, t }: { res: AskResult; t: T }) {
+/** example = the expected value is only one of many valid answers (no rule; Johnson ties). */
+export function Feedback({ res, t, example }: { res: AskResult; t: T; example?: boolean }) {
   const bad = res.items.filter((it) => it.status !== 'correct');
   return (
     <div className="feedback">
@@ -49,7 +51,7 @@ export function Feedback({ res, t }: { res: AskResult; t: T }) {
           <div key={it.part + k}>
             <p>
               {lbl && <b>{lbl}: </b>}
-              {it.expected !== 'yes' && it.expected !== 'no' && it.expected !== '-' && t('res.expected', { v: showGraded(it.expected) })}
+              {it.expected !== 'yes' && it.expected !== 'no' && it.expected !== '-' && t(example ? 'res.example' : 'res.expected', { v: showGraded(it.expected) })}
               {it.expected === 'yes' && t('res.edgeMissing')}
               {it.expected === 'no' && t('res.edgeExtra')}
               {it.expected === '-' && t('res.notCritical')}
@@ -73,6 +75,16 @@ export function Feedback({ res, t }: { res: AskResult; t: T }) {
   );
 }
 
+/** Asks whose shown answer is one example among several valid ones (spec §8.2). */
+function manyAnswers(ex: Exercise, ask: Ask): boolean {
+  if (ask.kind === 'assignment' && ex.problem.kind === 'balancing') return ex.problem.heuristic === undefined;
+  if (ask.kind === 'johnson' && (ask.johnsonWhat ?? 'sequence') === 'sequence') {
+    const sol = solve(ex.problem);
+    return sol.kind === 'flowshop' && sol.johnsonSequences.length > 1;
+  }
+  return false;
+}
+
 interface Props {
   ex: Exercise;
   answers: Record<string, Answer>;
@@ -94,7 +106,7 @@ export function AnswerForm({ ex, answers, onChange, results, disabled }: Props) 
               {res && <StatusChip status={res.status} />}
             </header>
             <AskEditor ex={ex} ask={ask} ans={answers[ask.id] ?? {}} set={(p) => onChange(ask.id, p)} res={res} disabled={!!disabled} label={`${letter(i)} ${askLabel(ask, t)}`} />
-            {res && res.status !== 'correct' && <Feedback res={res} t={t} />}
+            {res && res.status !== 'correct' && <Feedback res={res} t={t} example={manyAnswers(ex, ask)} />}
             {res && res.status === 'correct' && res.notes.length > 0 && (
               <p className="feedback ok">{res.notes.map((n) => t(`note.${n.id}`, { d: n.detail ?? '' })).join(' · ')}</p>
             )}

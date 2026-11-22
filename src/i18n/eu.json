@@ -192,5 +192,11 @@
   "heur.RPW": "pisu posizional handiena",
   "tie.alpha": "ordena alfabetikoa",
   "tie.shortest": "ataza laburrena, eta gero alfabetikoa",
-  "tie.mostFollowers": "oinordeko gehien, eta gero alfabetikoa"
+  "tie.mostFollowers": "oinordeko gehien, eta gero alfabetikoa",
+  "res.example": "Adibide baliodun bat: {v}",
+  "ex.source": "Jatorrizko azterketa (PDF)",
+  "poolNote.ope-euskadi-2020-6": "Euskadi OPE 2020, 1508, 6. ariketa. Datuak azterketatik transkribatuak (berrikusteko). Esleipen-araurik ez du finkatzen; enuntziatuko azken bi esaldiak (edozein esleipen baliodun eta η-ren formula) aplikazioak gehituak dira.",
+  "poolNote.ope-madrid-2022-7": "Madril OPE 2022, 0590-112, 7. ariketa. Datuak azterketatik transkribatuak (berrikusteko). Gantt diagrama (7.6, 0,3 p) ez da zuzentzen: puntuazioa gainerako 0,7 puntuen gainean kalkulatzen da. PERT formulak aplikazioak gehituak dira.",
+  "poolNote.spec-eg1": "EkoizpenLab-en argibideetako EG1 kasua (§11.2), eskuz kalkulatua.",
+  "poolNote.spec-eg2": "EkoizpenLab-en argibideetako EG2 kasua (§11.2), eskuz kalkulatua."
 }

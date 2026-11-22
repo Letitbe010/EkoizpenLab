@@ -195,7 +195,19 @@ export function PracticeExercise({ source }: { source: ExerciseSource }) {
       </ol>
 
       <p className="statement">{ex.text[lang]}</p>
-      {ex.sourceNote && <p className="source">{ex.sourceNote}</p>}
+      {ex.origin !== 'generated' && (
+        <p className="source">
+          {t(`poolNote.${ex.id}`)}
+          {ex.sourceUrl && (
+            <>
+              {' '}
+              <a href={ex.sourceUrl} target="_blank" rel="noreferrer">
+                {t('ex.source')}
+              </a>
+            </>
+          )}
+        </p>
+      )}
 
       <DataTable ex={ex} />
 

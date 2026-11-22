@@ -192,5 +192,11 @@
   "heur.RPW": "mayor peso posicional",
   "tie.alpha": "orden alfabético",
   "tie.shortest": "la tarea más corta y luego orden alfabético",
-  "tie.mostFollowers": "más sucesoras y luego orden alfabético"
+  "tie.mostFollowers": "más sucesoras y luego orden alfabético",
+  "res.example": "Un ejemplo válido: {v}",
+  "ex.source": "Examen original (PDF)",
+  "poolNote.ope-euskadi-2020-6": "OPE Euskadi 2020, 1508, ejercicio 6. Datos transcritos del examen (por revisar). No fija regla de asignación; las dos últimas frases del enunciado (cualquier asignación válida y la fórmula de η) las añade la aplicación.",
+  "poolNote.ope-madrid-2022-7": "OPE Madrid 2022, 0590-112, ejercicio 7. Datos transcritos del examen (por revisar). El diagrama de Gantt (7.6, 0,3 p) no se corrige: la nota se calcula sobre los 0,7 puntos restantes. Las fórmulas PERT las añade la aplicación.",
+  "poolNote.spec-eg1": "Caso EG1 de las especificaciones de EkoizpenLab (§11.2), calculado a mano.",
+  "poolNote.spec-eg2": "Caso EG2 de las especificaciones de EkoizpenLab (§11.2), calculado a mano."
 }
