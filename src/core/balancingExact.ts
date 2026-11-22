@@ -96,6 +96,15 @@ export const MAX_EXACT_TASKS = 15;
 
 /** Exact minimum number of stations (spec §5.2). Throws if a task does not fit in C. */
 export function optimalStations(p: BalancingProblem): number {
+  return optimalAssignment(p).length;
+}
+
+/**
+ * An assignment with the minimum number of stations: the DP below finds, for every
+ * precedence-closed task set, the best (stations, load of the last one); the optimal order is
+ * read back from the parent pointers and packed into stations the same way.
+ */
+export function optimalAssignment(p: BalancingProblem): Assignment {
   const s = scale(p);
   const n = s.ids.length;
   if (n > MAX_EXACT_TASKS) throw new Error(`optimalStations: more than ${MAX_EXACT_TASKS} tasks`);
@@ -105,6 +114,7 @@ export function optimalStations(p: BalancingProblem): number {
   // best[mask] = (stations used, load of the last one), lexicographic minimum; -1 = unreachable
   const k = new Int32Array(size).fill(-1);
   const load: bigint[] = new Array<bigint>(size).fill(0n);
+  const parent = new Int32Array(size).fill(-1);
   k[0] = 1;
   for (let mask = 0; mask < size; mask++) {
     const km = k[mask]!;
@@ -123,10 +133,29 @@ export function optimalStations(p: BalancingProblem): number {
       if (kt < 0 || nk < kt || (nk === kt && nl < load[to]!)) {
         k[to] = nk;
         load[to] = nl;
+        parent[to] = j;
       }
     }
   }
-  return k[size - 1]!;
+  const order: number[] = [];
+  for (let mask = size - 1; mask !== 0; ) {
+    const j = parent[mask]!;
+    order.push(j);
+    mask &= ~(1 << j);
+  }
+  order.reverse();
+  const out: Assignment = [[]];
+  let free = s.c;
+  for (const j of order) {
+    if (s.t[j]! > free) {
+      out.push([]);
+      free = s.c;
+    }
+    out[out.length - 1]!.push(s.ids[j]!);
+    free -= s.t[j]!;
+  }
+  if (out.length !== k[size - 1]) throw new Error('optimalAssignment: reconstruction mismatch');
+  return out;
 }
 
 /** Transitive followers by depth-first search (independent of dag.ts). */

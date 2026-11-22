@@ -246,7 +246,9 @@ def main() -> None:
         put(f"fs-{seed}", random_flowshop(seed))
     for f in sys.argv[2:]:
         data = json.loads(Path(f).read_text(encoding="utf-8"))
-        for key, case in data.items():
+        # golden / case files are {key: {problem}}; the pool is a list of exercises with an id
+        items = data.items() if isinstance(data, dict) else ((e["id"], e) for e in data)
+        for key, case in items:
             if isinstance(case, dict) and case.get("problem", {}).get("kind") in SOLVERS:
                 put(key, case["problem"])
     out_path.parent.mkdir(parents=True, exist_ok=True)

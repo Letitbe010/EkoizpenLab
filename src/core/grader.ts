@@ -147,11 +147,24 @@ function sameValue(u: ParsedValue, e: Rational): boolean {
 interface Hyp<T> {
   id: DiagnosisId;
   value: T;
+  /**
+   * The mistake may coincide with the right answer for structural reasons (e.g. efficiency
+   * with N_min when N = N_min): then it is not a mistake and the exercise is still fine.
+   * Non-optional hypotheses that coincide make the exercise undiagnosable (spec §10.3).
+   */
+  optional?: boolean;
 }
+
+/** Set by indistinguishable(): collects the hypotheses that cannot be told apart. */
+let PROBE: string[] | null = null;
+const probe = (part: string, h: Hyp<unknown>, same: boolean): void => {
+  if (PROBE && same && !h.optional) PROBE.push(`${part}:${h.id}`);
+};
 
 /** Exact time (or duration) item; `scale` converts expected values into the user's unit. */
 function timeItem(part: string, raw: string | undefined, e: Rational, scale: Rational, unitLabel: string, hyps: Hyp<Rational>[] = []): ItemResult {
   const ex = R.mul(e, scale);
+  for (const h of hyps) probe(part, h, R.eq(h.value, e));
   const expected = unitLabel ? `${S(ex)} ${unitLabel}` : S(ex);
   const u = parseUserValue(raw);
   if (u === undefined) return { part, status: 'missing', expected };
@@ -164,6 +177,8 @@ function timeItem(part: string, raw: string | undefined, e: Rational, scale: Rat
 /** Number item with an absolute tolerance (efficiencies, probabilities, PERT values). */
 function numberItem(part: string, raw: string | undefined, e: number, tol: number, factor: number, label: string, digits: number, hyps: Hyp<number>[] = []): ItemResult {
   const expected = `${(e * factor).toFixed(digits)}${label}`;
+  // distinguishable = farther than twice the tolerance (no answer can match both)
+  for (const h of hyps) probe(part, h, Math.abs(h.value - e) <= 2 * tol * (1 + 1e-9));
   const u = parseUserValue(raw);
   if (u === undefined) return { part, status: 'missing', expected };
   if (u === null) return { part, status: 'invalid', expected, given: raw };
@@ -258,8 +273,8 @@ function gradeBalancing(ex: Exercise, p: BalancingProblem, sol: BalancingSolutio
           ask,
           [
             numberItem('line', ans?.value, R.toNumber(mm.efficiency), 0.001, factor, label, factor === 100 ? 2 : 4, [
-              { id: 'eff-nmin', value: nminEff },
-              { id: baseHyp, value: R.toNumber(otherBase.efficiency) },
+              { id: 'eff-nmin', value: nminEff, optional: mm.n === mm.nMin },
+              { id: baseHyp, value: R.toNumber(otherBase.efficiency), optional: true },
             ]),
           ],
           notes,
@@ -274,7 +289,7 @@ function gradeBalancing(ex: Exercise, p: BalancingProblem, sol: BalancingSolutio
         ask,
         [
           numberItem(`station ${k + 1}`, ans?.value, R.toNumber(mm.stationEfficiency[k]!), 0.001, factor, label, factor === 100 ? 2 : 4, [
-            { id: baseHyp, value: R.toNumber(otherBase.stationEfficiency[k]!) },
+            { id: baseHyp, value: R.toNumber(otherBase.stationEfficiency[k]!), optional: true },
           ]),
         ],
         notes,
@@ -401,13 +416,13 @@ function gradeProject(p: ProjectProblem, sol: ProjectSolution, ask: Ask, ans: An
       }
       const items: ItemResult[] = [];
       for (const r of c.rows) {
-        for (const f of CPM_FIELDS) {
+        for (const f of ask.fields ?? CPM_FIELDS) {
           const hyps: Hyp<Rational>[] = [];
-          if (f === 'tf') hyps.push({ id: 'ff-tf-swapped', value: r.ff });
-          if (f === 'ff') hyps.push({ id: 'ff-tf-swapped', value: r.tf });
-          if (f === 'lf') hyps.push({ id: 'backward-max', value: lfMax.get(r.id)! });
-          if (f === 'ls') hyps.push({ id: 'backward-max', value: lsMax.get(r.id)! });
-          if (f === 'tf') hyps.push({ id: 'backward-max', value: R.sub(lsMax.get(r.id)!, r.es) });
+          if (f === 'tf') hyps.push({ id: 'ff-tf-swapped', value: r.ff, optional: true });
+          if (f === 'ff') hyps.push({ id: 'ff-tf-swapped', value: r.tf, optional: true });
+          if (f === 'lf') hyps.push({ id: 'backward-max', value: lfMax.get(r.id)!, optional: true });
+          if (f === 'ls') hyps.push({ id: 'backward-max', value: lsMax.get(r.id)!, optional: true });
+          if (f === 'tf') hyps.push({ id: 'backward-max', value: R.sub(lsMax.get(r.id)!, r.es), optional: true });
           items.push(timeItem(`${r.id}.${f}`, ans?.table?.[r.id]?.[f], r[f], R.ONE, '', hyps));
         }
       }
@@ -456,14 +471,14 @@ function gradePert(p: ProjectProblem, sol: ProjectSolution, ask: Ask, ans: Answe
       return finish(ask, [
         numberItem('value', ans?.value, R.toNumber(r.projectVariance), 0.0005, 1, '', 3, [
           { id: 'sd-summed', value: sdSum * sdSum },
-          ...otherVars.map((v) => ({ id: 'other-path' as const, value: v })),
+          ...otherVars.map((v) => ({ id: 'other-path' as const, value: v, optional: true })),
         ]),
       ]);
     case 'sigma':
       return finish(ask, [
         numberItem('value', ans?.value, sigma, 0.0005, 1, '', 3, [
           { id: 'sd-summed', value: sdSum },
-          ...otherVars.map((v) => ({ id: 'other-path' as const, value: Math.sqrt(v) })),
+          ...otherVars.map((v) => ({ id: 'other-path' as const, value: Math.sqrt(v), optional: true })),
         ]),
       ]);
     case 'probability': {
@@ -474,7 +489,7 @@ function gradePert(p: ProjectProblem, sol: ProjectSolution, ask: Ask, ans: Answe
         numberItem('value', ans?.value, pr, 0.005, pctFactor, pctLabel, pctFactor === 100 ? 1 : 3, [
           { id: 'phi-wrong-side', value: 1 - pr },
           { id: 'sd-summed', value: phi((t - Te) / sdSum) },
-          ...otherVars.map((v) => ({ id: 'other-path' as const, value: phi((t - Te) / Math.sqrt(v)) })),
+          ...otherVars.map((v) => ({ id: 'other-path' as const, value: phi((t - Te) / Math.sqrt(v)), optional: true })),
         ]),
       ]);
     }
@@ -500,12 +515,12 @@ function gradeFlowShop(p: FlowShopProblem, sol: FlowShopSolution, ask: Ask, ans:
   const reversed = schedule(p, johnsonSequence(swapped));
   const what = ask.johnsonWhat ?? 'sequence';
   if (what === 'makespan') {
-    return finish(ask, [timeItem('value', ans?.value, sol.schedule.makespan, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.makespan }])]);
+    return finish(ask, [timeItem('value', ans?.value, sol.schedule.makespan, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.makespan, optional: true }])]);
   }
   if (what === 'idle') {
     return finish(ask, [
-      timeItem('m1', ans?.m1, sol.schedule.idleM1, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.idleM1 }]),
-      timeItem('m2', ans?.m2, sol.schedule.idleM2, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.idleM2 }]),
+      timeItem('m1', ans?.m1, sol.schedule.idleM1, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.idleM1, optional: true }]),
+      timeItem('m2', ans?.m2, sol.schedule.idleM2, R.ONE, '', [{ id: 'johnson-reversed', value: reversed.idleM2, optional: true }]),
     ]);
   }
   const expected = sol.sequence.join('-');
@@ -545,4 +560,26 @@ export function gradeExercise(ex: Exercise, answers: Record<string, Answer>): Gr
     acc += w * r.score;
   }
   return { asks, score10: wsum > 0 ? (10 * acc) / wsum : 0 };
+}
+
+/**
+ * Common mistakes of an exercise whose result cannot be told apart from the right answer
+ * (spec §10.3), as "part:diagnosis". Uses the grader's own hypotheses, so the generator filter
+ * and the grader never diverge. Empty list = every mistake is diagnosable.
+ */
+export function indistinguishable(ex: Exercise): string[] {
+  PROBE = [];
+  try {
+    gradeExercise(ex, {});
+    // the sequence ask: the reversed rule must not produce a Johnson sequence
+    if (ex.problem.kind === 'flowshop' && ex.asks.some((a) => a.kind === 'johnson' && (a.johnsonWhat ?? 'sequence') === 'sequence')) {
+      const p = ex.problem;
+      const swapped: FlowShopProblem = { kind: 'flowshop', jobs: p.jobs.map((j) => ({ id: j.id, p1: j.p2, p2: j.p1 })) };
+      const js = johnsonSequences(p).map((x) => x.join('-'));
+      if (js.includes(johnsonSequence(swapped).join('-'))) PROBE.push('sequence:johnson-reversed');
+    }
+    return [...new Set(PROBE)];
+  } finally {
+    PROBE = null;
+  }
 }

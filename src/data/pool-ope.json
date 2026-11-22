@@ -1,0 +1,74 @@
+[
+  {
+    "id": "ope-euskadi-2020-6",
+    "origin": "ope",
+    "sourceNote": "Euskadi OPE 2020, 1508, 6. ariketa (Ekoizpenaren programazioa). Datuak Azterketa_ariketa adibideak/Fabrikazio_mekanikoaren_antolamendua_eta_proiektuak_eusk.pdf fitxategitik transkribatuak (16. orria). Esleipen-araurik ez du finkatzen.",
+    "sourceUrl": "https://www.euskadi.eus/contenidos/informacion/langile_d_ope_sec_fp_2020_azte/es_def/adjuntos/secundaria/Organizacion_y_proyectos_de_fabricacion_mecanica_cast.pdf",
+    "difficulty": 2,
+    "problem": {
+      "kind": "balancing",
+      "unit": "min",
+      "available": "480",
+      "demand": 40,
+      "tasks": [
+        { "id": "A", "t": "10", "preds": [] },
+        { "id": "B", "t": "11", "preds": ["A"] },
+        { "id": "C", "t": "5", "preds": ["B"] },
+        { "id": "D", "t": "4", "preds": ["B"] },
+        { "id": "E", "t": "12", "preds": ["A"] },
+        { "id": "F", "t": "3", "preds": ["C", "D"] },
+        { "id": "G", "t": "7", "preds": ["F"] },
+        { "id": "H", "t": "11", "preds": ["E"] },
+        { "id": "I", "t": "3", "preds": ["G", "H"] }
+      ]
+    },
+    "asks": [
+      { "id": "a", "kind": "precedence" },
+      { "id": "b", "kind": "cycleTime" },
+      { "id": "c", "kind": "nMin" },
+      { "id": "d", "kind": "assignment" },
+      { "id": "e1", "kind": "efficiency", "scope": "station", "station": "last" },
+      { "id": "e2", "kind": "efficiency" }
+    ],
+    "weights": { "a": 0.2, "b": 0.1, "c": 0.1, "d": 0.3, "e1": 0.15, "e2": 0.15 },
+    "text": {
+      "eu": "Fabrikazio-planta batean ekoizpen-prozesu bat orekatu nahi da, egunean 40 pieza ekoizteko (8 ordu egunean). Taulan, pieza bat ekoizteko atazak, bakoitzaren denbora (min) eta aurretik egin beharreko atazak. Esleipenerako araurik ez da finkatzen: edozein esleipen baliodun onartzen da, lanpostu kopuru minimoarekin. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+      "es": "En una planta de fabricación se quiere equilibrar un proceso de producción para fabricar 40 piezas al día (8 horas al día). En la tabla, las tareas para fabricar una pieza, el tiempo de cada una (min) y las tareas que deben hacerse antes. No se fija regla de asignación: se acepta cualquier asignación válida, con el número mínimo de estaciones. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+    },
+    "review": "review-needed"
+  },
+  {
+    "id": "ope-madrid-2022-7",
+    "origin": "ope",
+    "sourceNote": "Madril OPE 2022, 0590-112, 7. ariketa (argibideetan 'Madril 2023, berrezarpena'). Datuak Azterketa_ariketa adibideak/Madril_2022_0590-112_proba_praktikoa.pdf fitxategitik transkribatuak. Gantt diagrama (7.6, 0,3 puntu) ez da hemen zuzentzen; nodoetako 'Early' eta 'Last' jardueren ES/EF/LS/LF gisa eskatzen dira.",
+    "sourceUrl": "https://www.comunidad.madrid/docs/assets/2023/06/26/rh03_257_2023_exam_r_590112.pdf",
+    "difficulty": 2,
+    "problem": {
+      "kind": "project",
+      "activities": [
+        { "id": "A", "preds": [], "pert": ["4", "6", "8"] },
+        { "id": "B", "preds": ["A"], "pert": ["5", "7", "15"] },
+        { "id": "C", "preds": ["A"], "pert": ["4", "8", "12"] },
+        { "id": "D", "preds": ["B"], "pert": ["15", "20", "25"] },
+        { "id": "E", "preds": ["B"], "pert": ["10", "18", "26"] },
+        { "id": "F", "preds": ["C"], "pert": ["8", "9", "16"] },
+        { "id": "G", "preds": ["E"], "pert": ["4", "8", "12"] },
+        { "id": "H", "preds": ["D", "F"], "pert": ["1", "2", "3"] },
+        { "id": "I", "preds": ["G", "H"], "pert": ["6", "7", "8"] }
+      ]
+    },
+    "asks": [
+      { "id": "a", "kind": "pert", "pertWhat": "te" },
+      { "id": "b", "kind": "cpmTable", "fields": ["es", "ef", "ls", "lf"] },
+      { "id": "c", "kind": "criticalPath" },
+      { "id": "d", "kind": "duration" },
+      { "id": "e", "kind": "pert", "pertWhat": "sigma" }
+    ],
+    "weights": { "a": 0.1, "b": 0.3, "c": 0.1, "d": 0.1, "e": 0.1 },
+    "text": {
+      "eu": "Erakunde batek kontabilitatea eta inbentarioen kontrola automatizatu nahi ditu. Aholkularitzak jardueren taula aurkezten du, hiru estimazioekin (egunak): baikorra (a), probableena (m) eta ezkorra (b). Erabili PERT: te = (a + 4m + b)/6 eta σ² = ((b − a)/6)²; proiektuaren bariantza bide kritikoko bariantzen batura da.",
+      "es": "Una organización quiere automatizar su proceso de contabilidad y control de inventarios. La consultoría presenta la tabla de actividades, con tres estimaciones (días): optimista (a), más probable (m) y pesimista (b). Usa PERT: te = (a + 4m + b)/6 y σ² = ((b − a)/6)²; la varianza del proyecto es la suma de las varianzas del camino crítico."
+    },
+    "review": "review-needed"
+  }
+]

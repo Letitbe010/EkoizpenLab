@@ -4,7 +4,7 @@
  * Everything is computed from the data shown to the user (the problem itself).
  */
 import { assignHeuristic, metrics, nMin, type BalancingMetrics } from './balancing';
-import { heuristicByList, optimalStations, validateAssignment } from './balancingExact';
+import { heuristicByList, optimalAssignment, validateAssignment } from './balancingExact';
 import { cpm, type CpmResult } from './cpm';
 import { cpmAlt } from './cpmAlt';
 import { redundantEdges } from './dag';
@@ -28,11 +28,17 @@ export interface BalancingSolution {
   edges: [string, string][];
   nMin: number;
   nOptimal: number;
-  /** Rule used for the reference assignment (the exercise's, or LTT + alphabetical). */
+  /** Rule of the heuristic assignment (the exercise's, or LTT + alphabetical). */
   heuristic: Heuristic;
   tieBreak: TieBreak;
   /** true if the exercise states the rule (then the assignment must follow it). */
   ruleGiven: boolean;
+  /** Assignment the rule gives (A, checked with B). */
+  heuristicAssignment: Assignment;
+  /**
+   * Reference answer: the rule's assignment if the exercise states a rule; otherwise an
+   * assignment with the minimum number of stations (solver B, exact).
+   */
   reference: Assignment;
   metrics: BalancingMetrics;
 }
@@ -58,16 +64,19 @@ export function solveBalancing(p: BalancingProblem): BalancingSolution {
   const ruleGiven = p.heuristic !== undefined;
   const heuristic = p.heuristic ?? 'LTT';
   const tieBreak = p.tieBreak ?? 'alpha';
-  const reference = assignHeuristic(p, heuristic, tieBreak).stations;
-  check(JSON.stringify(heuristicByList(p, heuristic, tieBreak)) === JSON.stringify(reference), 'balancing: A and B assignments differ');
-  check(validateAssignment(p, reference).length === 0, 'balancing: reference assignment is not valid');
+  const heuristicAssignment = assignHeuristic(p, heuristic, tieBreak).stations;
+  check(JSON.stringify(heuristicByList(p, heuristic, tieBreak)) === JSON.stringify(heuristicAssignment), 'balancing: A and B assignments differ');
+  check(validateAssignment(p, heuristicAssignment).length === 0, 'balancing: heuristic assignment is not valid');
+  const optimal = optimalAssignment(p);
+  check(validateAssignment(p, optimal).length === 0, 'balancing: optimal assignment is not valid');
+  const nOptimal = optimal.length;
+  const reference = ruleGiven ? heuristicAssignment : optimal;
   const m = metrics(p, reference);
-  const nOptimal = optimalStations(p);
-  check(nOptimal >= m.nMin && m.n >= nOptimal, 'balancing: N_min ≤ N_opt ≤ N violated');
+  check(nOptimal >= m.nMin && heuristicAssignment.length >= nOptimal, 'balancing: N_min ≤ N_opt ≤ N violated');
   check(R.cmp(m.efficiency, R.ONE) <= 0, 'balancing: efficiency > 1');
   const red = new Set(redundantEdges(p.tasks).map(([a, b]) => `${a}>${b}`));
   const edges = p.tasks.flatMap((t) => t.preds.filter((x) => !red.has(`${x}>${t.id}`)).map((x) => [x, t.id] as [string, string]));
-  return { kind: 'balancing', edges, nMin: nMin(p), nOptimal, heuristic, tieBreak, ruleGiven, reference, metrics: m };
+  return { kind: 'balancing', edges, nMin: nMin(p), nOptimal, heuristic, tieBreak, ruleGiven, heuristicAssignment, reference, metrics: m };
 }
 
 export function solveProject(p: ProjectProblem): ProjectSolution {

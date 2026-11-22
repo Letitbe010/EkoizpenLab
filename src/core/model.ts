@@ -86,6 +86,8 @@ export interface Ask {
   scope?: 'line' | 'station';
   /** efficiency of one station: 1-based index or the last one. */
   station?: number | 'last';
+  /** cpmTable: the columns asked (default all: es, ef, ls, lf, tf, ff). */
+  fields?: ('es' | 'ef' | 'ls' | 'lf' | 'tf' | 'ff')[];
   /** criticalPath with several critical paths: give all of them (default) or any one. */
   criticalMode?: 'all' | 'any';
   /** pert: which result is asked. */

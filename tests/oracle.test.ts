@@ -83,6 +83,9 @@ describe('oracle (Python, networkx + fractions)', () => {
   it('covers the project golden cases and the random projects and flow shops', () => {
     expect(Object.keys(all.project)).toEqual(expect.arrayContaining(['EG2', 'EG4']));
     expect(Object.keys(all.flowshop)).toContain('EG3');
+    // the whole pool goes through the oracle (spec §11.1)
+    const pool = JSON.parse(readFileSync('src/data/pool.json', 'utf-8')) as { id: string; problem: { kind: keyof OracleOut } }[];
+    for (const e of pool) expect(Object.keys(all[e.problem.kind]), e.id).toContain(e.id);
     expect(Object.keys(all.project).length).toBeGreaterThanOrEqual(402);
     expect(Object.keys(all.flowshop).length).toBeGreaterThanOrEqual(201);
   });

@@ -1,5 +1,8 @@
 import fc from 'fast-check';
-import type { BalancingProblem, FlowShopProblem, ProjectProblem, Task } from '../src/core/model';
+import type { Answer } from '../src/core/grader';
+import type { BalancingProblem, Exercise, FlowShopProblem, ProjectProblem, Task } from '../src/core/model';
+import { phi, phiInv } from '../src/core/normal';
+import { solve } from '../src/core/solve';
 import * as R from '../src/core/rational';
 import type { ProblemJson } from '../src/core/serialize';
 import { problemFromJson } from '../src/core/serialize';
@@ -70,3 +73,54 @@ export const arbFlowShop = (maxJobs = 7): fc.Arbitrary<FlowShopProblem> =>
     kind: 'flowshop',
     jobs: js.map(([a, b], i) => ({ id: `J${i + 1}`, p1: R.q(a), p2: R.q(b) })),
   }));
+
+/** Perfect answers for an exercise, built from the verified solution (pool and generator tests). */
+export function perfectAnswers(ex: Exercise): Record<string, Answer> {
+  const sol = solve(ex.problem);
+  const out: Record<string, Answer> = {};
+  for (const ask of ex.asks) {
+    if (sol.kind === 'balancing') {
+      const m = sol.metrics;
+      const pct = (x: R.Rational) => R.toFixed(R.mul(x, R.q(100)), 4);
+      switch (ask.kind) {
+        case 'precedence': out[ask.id] = { edges: sol.edges }; break;
+        case 'cycleTime': out[ask.id] = { value: S(m.c) }; break;
+        case 'nMin': out[ask.id] = { value: String(sol.nMin) }; break;
+        case 'assignment': out[ask.id] = { stations: sol.reference }; break;
+        case 'stationTimes': out[ask.id] = { values: m.stationTimes.map(S) }; break;
+        case 'idle': out[ask.id] = { value: S(m.idle) }; break;
+        case 'efficiency':
+          out[ask.id] = { value: (ask.scope ?? 'line') === 'line' ? pct(m.efficiency) : pct(m.stationEfficiency[ask.station === 'last' || ask.station === undefined ? m.n - 1 : ask.station - 1]!) };
+          break;
+        default: throw new Error(ask.kind);
+      }
+    } else if (sol.kind === 'project') {
+      const c = sol.cpm;
+      const r = sol.pert;
+      switch (ask.kind) {
+        case 'cpmTable':
+          out[ask.id] = { table: Object.fromEntries(c.rows.map((x) => [x.id, { es: S(x.es), ef: S(x.ef), ls: S(x.ls), lf: S(x.lf), tf: S(x.tf), ff: S(x.ff) }])) };
+          break;
+        case 'criticalPath': out[ask.id] = { paths: c.criticalPaths }; break;
+        case 'duration': out[ask.id] = { value: S(c.duration) }; break;
+        case 'pert': {
+          const w = ask.pertWhat ?? 'variance';
+          const Te = R.toNumber(r!.Te);
+          if (w === 'te') out[ask.id] = { perId: Object.fromEntries([...r!.te].map(([k, v]) => [k, S(v)])) };
+          if (w === 'variance') out[ask.id] = { value: R.toFixed(r!.projectVariance, 4) };
+          if (w === 'sigma') out[ask.id] = { value: r!.sigma.toFixed(4) };
+          if (w === 'probability') out[ask.id] = { value: (100 * phi((R.toNumber(ask.t!) - Te) / r!.sigma)).toFixed(3) };
+          if (w === 'deadline') out[ask.id] = { value: (Te + phiInv(ask.prob!) * r!.sigma).toFixed(3) };
+          break;
+        }
+        default: throw new Error(ask.kind);
+      }
+    } else {
+      const w = ask.johnsonWhat ?? 'sequence';
+      if (w === 'sequence') out[ask.id] = { sequence: sol.sequence };
+      if (w === 'makespan') out[ask.id] = { value: S(sol.schedule.makespan) };
+      if (w === 'idle') out[ask.id] = { m1: S(sol.schedule.idleM1), m2: S(sol.schedule.idleM2) };
+    }
+  }
+  return out;
+}

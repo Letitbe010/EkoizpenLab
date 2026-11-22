@@ -1,6 +1,6 @@
 import fc from 'fast-check';
 import { BalancingError, assignHeuristic, checkFeasible, cycleTime, metrics, nMin, priorities } from '../src/core/balancing';
-import { heuristicByList, optimalStations, validateAssignment } from '../src/core/balancingExact';
+import { heuristicByList, optimalAssignment, optimalStations, validateAssignment } from '../src/core/balancingExact';
 import type { BalancingProblem, Heuristic, TieBreak } from '../src/core/model';
 import * as R from '../src/core/rational';
 import { S, arbBalancing, goldenProblem } from './helpers';
@@ -143,6 +143,20 @@ describe('balancing: A = B and global checks (property-based)', () => {
         expect(m.n).toBeGreaterThanOrEqual(optimalStations(p));
       }),
       { numRuns: 400 },
+    );
+  });
+});
+
+describe('balancing: optimal assignment (solver B)', () => {
+  it('is valid and has exactly the optimal number of stations', () => {
+    fc.assert(
+      fc.property(arbBalancing(10), (p) => {
+        const a = optimalAssignment(p);
+        expect(validateAssignment(p, a)).toEqual([]);
+        expect(a.length).toBe(optimalStations(p));
+        expect(a.length).toBeLessThanOrEqual(assignHeuristic(p, 'LTT').stations.length);
+      }),
+      { numRuns: 300 },
     );
   });
 });

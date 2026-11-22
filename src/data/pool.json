@@ -1,0 +1,1367 @@
+[
+ {
+  "id": "ope-euskadi-2020-6",
+  "origin": "ope",
+  "sourceNote": "Euskadi OPE 2020, 1508, 6. ariketa (Ekoizpenaren programazioa). Datuak Azterketa_ariketa adibideak/Fabrikazio_mekanikoaren_antolamendua_eta_proiektuak_eusk.pdf fitxategitik transkribatuak (16. orria). Esleipen-araurik ez du finkatzen.",
+  "sourceUrl": "https://www.euskadi.eus/contenidos/informacion/langile_d_ope_sec_fp_2020_azte/es_def/adjuntos/secundaria/Organizacion_y_proyectos_de_fabricacion_mecanica_cast.pdf",
+  "difficulty": 2,
+  "problem": {
+   "kind": "balancing",
+   "unit": "min",
+   "available": "480",
+   "demand": 40,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "10",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "11",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "C",
+     "t": "5",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "4",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "12",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "3",
+     "preds": [
+      "C",
+      "D"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "7",
+     "preds": [
+      "F"
+     ]
+    },
+    {
+     "id": "H",
+     "t": "11",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "I",
+     "t": "3",
+     "preds": [
+      "G",
+      "H"
+     ]
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e1",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "e2",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e1": 0.15,
+   "e2": 0.15
+  },
+  "text": {
+   "eu": "Fabrikazio-planta batean ekoizpen-prozesu bat orekatu nahi da, egunean 40 pieza ekoizteko (8 ordu egunean). Taulan, pieza bat ekoizteko atazak, bakoitzaren denbora (min) eta aurretik egin beharreko atazak. Esleipenerako araurik ez da finkatzen: edozein esleipen baliodun onartzen da, lanpostu kopuru minimoarekin. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "En una planta de fabricación se quiere equilibrar un proceso de producción para fabricar 40 piezas al día (8 horas al día). En la tabla, las tareas para fabricar una pieza, el tiempo de cada una (min) y las tareas que deben hacerse antes. No se fija regla de asignación: se acepta cualquier asignación válida, con el número mínimo de estaciones. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "ope-madrid-2022-7",
+  "origin": "ope",
+  "sourceNote": "Madril OPE 2022, 0590-112, 7. ariketa (argibideetan 'Madril 2023, berrezarpena'). Datuak Azterketa_ariketa adibideak/Madril_2022_0590-112_proba_praktikoa.pdf fitxategitik transkribatuak. Gantt diagrama (7.6, 0,3 puntu) ez da hemen zuzentzen; nodoetako 'Early' eta 'Last' jardueren ES/EF/LS/LF gisa eskatzen dira.",
+  "sourceUrl": "https://www.comunidad.madrid/docs/assets/2023/06/26/rh03_257_2023_exam_r_590112.pdf",
+  "difficulty": 2,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "pert": [
+      "4",
+      "6",
+      "8"
+     ]
+    },
+    {
+     "id": "B",
+     "preds": [
+      "A"
+     ],
+     "pert": [
+      "5",
+      "7",
+      "15"
+     ]
+    },
+    {
+     "id": "C",
+     "preds": [
+      "A"
+     ],
+     "pert": [
+      "4",
+      "8",
+      "12"
+     ]
+    },
+    {
+     "id": "D",
+     "preds": [
+      "B"
+     ],
+     "pert": [
+      "15",
+      "20",
+      "25"
+     ]
+    },
+    {
+     "id": "E",
+     "preds": [
+      "B"
+     ],
+     "pert": [
+      "10",
+      "18",
+      "26"
+     ]
+    },
+    {
+     "id": "F",
+     "preds": [
+      "C"
+     ],
+     "pert": [
+      "8",
+      "9",
+      "16"
+     ]
+    },
+    {
+     "id": "G",
+     "preds": [
+      "E"
+     ],
+     "pert": [
+      "4",
+      "8",
+      "12"
+     ]
+    },
+    {
+     "id": "H",
+     "preds": [
+      "D",
+      "F"
+     ],
+     "pert": [
+      "1",
+      "2",
+      "3"
+     ]
+    },
+    {
+     "id": "I",
+     "preds": [
+      "G",
+      "H"
+     ],
+     "pert": [
+      "6",
+      "7",
+      "8"
+     ]
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "pert",
+    "pertWhat": "te"
+   },
+   {
+    "id": "b",
+    "kind": "cpmTable",
+    "fields": [
+     "es",
+     "ef",
+     "ls",
+     "lf"
+    ]
+   },
+   {
+    "id": "c",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "d",
+    "kind": "duration"
+   },
+   {
+    "id": "e",
+    "kind": "pert",
+    "pertWhat": "sigma"
+   }
+  ],
+  "weights": {
+   "a": 0.1,
+   "b": 0.3,
+   "c": 0.1,
+   "d": 0.1,
+   "e": 0.1
+  },
+  "text": {
+   "eu": "Erakunde batek kontabilitatea eta inbentarioen kontrola automatizatu nahi ditu. Aholkularitzak jardueren taula aurkezten du, hiru estimazioekin (egunak): baikorra (a), probableena (m) eta ezkorra (b). Erabili PERT: te = (a + 4m + b)/6 eta σ² = ((b − a)/6)²; proiektuaren bariantza bide kritikoko bariantzen batura da.",
+   "es": "Una organización quiere automatizar su proceso de contabilidad y control de inventarios. La consultoría presenta la tabla de actividades, con tres estimaciones (días): optimista (a), más probable (m) y pesimista (b). Usa PERT: te = (a + 4m + b)/6 y σ² = ((b − a)/6)²; la varianza del proyecto es la suma de las varianzas del camino crítico."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "balancing-1-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 1,
+  "problem": {
+   "kind": "balancing",
+   "unit": "min",
+   "available": "480",
+   "demand": 40,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "6",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "10",
+     "preds": []
+    },
+    {
+     "id": "C",
+     "t": "5",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "4",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "2",
+     "preds": [
+      "C",
+      "D"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "6",
+     "preds": [
+      "C"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "8",
+     "preds": [
+      "C"
+     ]
+    }
+   ],
+   "heuristic": "LTT",
+   "tieBreak": "alpha"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Muntaketa-lerro batek 40 unitate ekoiztu behar ditu 8 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"ataza luzeena lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 40 unidades en un turno de 8 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea más larga primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "balancing-2-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 2,
+  "problem": {
+   "kind": "balancing",
+   "unit": "min",
+   "available": "480",
+   "demand": 40,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "5",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "4",
+     "preds": []
+    },
+    {
+     "id": "C",
+     "t": "9",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "8",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "10",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "4",
+     "preds": [
+      "C"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "9",
+     "preds": [
+      "B",
+      "C"
+     ]
+    },
+    {
+     "id": "H",
+     "t": "6",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "I",
+     "t": "10",
+     "preds": [
+      "C",
+      "D"
+     ]
+    }
+   ],
+   "heuristic": "mostFollowers",
+   "tieBreak": "alpha"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e",
+    "kind": "stationTimes"
+   },
+   {
+    "id": "f",
+    "kind": "idle"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e": 0.1,
+   "f": 0.1,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Muntaketa-lerro batek 40 unitate ekoiztu behar ditu 8 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"oinordeko gehien dituen ataza lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 40 unidades en un turno de 8 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea con más sucesoras primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "balancing-3-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 3,
+  "problem": {
+   "kind": "balancing",
+   "unit": "s",
+   "available": "25200",
+   "demand": 280,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "90",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "30",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "C",
+     "t": "70",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "20",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "35",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "45",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "30",
+     "preds": [
+      "C",
+      "D"
+     ]
+    },
+    {
+     "id": "H",
+     "t": "20",
+     "preds": [
+      "E"
+     ]
+    },
+    {
+     "id": "I",
+     "t": "70",
+     "preds": [
+      "F"
+     ]
+    },
+    {
+     "id": "J",
+     "t": "55",
+     "preds": [
+      "G"
+     ]
+    },
+    {
+     "id": "K",
+     "t": "20",
+     "preds": [
+      "F",
+      "H"
+     ]
+    }
+   ],
+   "heuristic": "mostFollowers",
+   "tieBreak": "shortest"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e",
+    "kind": "stationTimes"
+   },
+   {
+    "id": "f",
+    "kind": "idle"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e": 0.1,
+   "f": 0.1,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Muntaketa-lerro batek 280 unitate ekoiztu behar ditu 7 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (s) eta aurrekotasunak. Esleitu atazak lanpostuei \"oinordeko gehien dituen ataza lehenik\" arauarekin; berdinketan, ataza laburrena. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 280 unidades en un turno de 7 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (s) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea con más sucesoras primero»; en caso de empate, la tarea más corta. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "balancingExcess-3-2535364964",
+  "origin": "generated",
+  "seed": 2535364964,
+  "difficulty": 3,
+  "problem": {
+   "kind": "balancing",
+   "unit": "s",
+   "available": "27000",
+   "demand": 300,
+   "tasks": [
+    {
+     "id": "A",
+     "t": "45",
+     "preds": []
+    },
+    {
+     "id": "B",
+     "t": "85",
+     "preds": []
+    },
+    {
+     "id": "C",
+     "t": "45",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "D",
+     "t": "45",
+     "preds": [
+      "A",
+      "B"
+     ]
+    },
+    {
+     "id": "E",
+     "t": "80",
+     "preds": [
+      "A"
+     ]
+    },
+    {
+     "id": "F",
+     "t": "90",
+     "preds": [
+      "B"
+     ]
+    },
+    {
+     "id": "G",
+     "t": "50",
+     "preds": [
+      "F"
+     ]
+    },
+    {
+     "id": "H",
+     "t": "90",
+     "preds": [
+      "B",
+      "C"
+     ]
+    },
+    {
+     "id": "I",
+     "t": "20",
+     "preds": [
+      "A",
+      "G"
+     ]
+    },
+    {
+     "id": "J",
+     "t": "15",
+     "preds": [
+      "D",
+      "E",
+      "H"
+     ]
+    },
+    {
+     "id": "K",
+     "t": "55",
+     "preds": [
+      "G"
+     ]
+    }
+   ],
+   "heuristic": "mostFollowers",
+   "tieBreak": "alpha"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "precedence"
+   },
+   {
+    "id": "b",
+    "kind": "cycleTime"
+   },
+   {
+    "id": "c",
+    "kind": "nMin"
+   },
+   {
+    "id": "d",
+    "kind": "assignment"
+   },
+   {
+    "id": "e",
+    "kind": "stationTimes"
+   },
+   {
+    "id": "f",
+    "kind": "idle"
+   },
+   {
+    "id": "g",
+    "kind": "efficiency",
+    "scope": "station",
+    "station": "last"
+   },
+   {
+    "id": "h",
+    "kind": "efficiency"
+   }
+  ],
+  "weights": {
+   "a": 0.2,
+   "b": 0.1,
+   "c": 0.1,
+   "d": 0.3,
+   "e": 0.1,
+   "f": 0.1,
+   "g": 0.15,
+   "h": 0.15
+  },
+  "text": {
+   "eu": "Muntaketa-lerro batek 300 unitate ekoiztu behar ditu 7,5 orduko txandan (etenik gabe). Taulan, unitate bat ekoizteko atazak, haien denborak (s) eta aurrekotasunak. Esleitu atazak lanpostuei \"oinordeko gehien dituen ataza lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
+   "es": "Una línea de montaje debe producir 300 unidades en un turno de 7,5 horas (sin paradas). En la tabla, las tareas para producir una unidad, sus tiempos (s) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea con más sucesoras primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "cpm-1-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 1,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "d": "4"
+    },
+    {
+     "id": "B",
+     "preds": [],
+     "d": "8"
+    },
+    {
+     "id": "C",
+     "preds": [
+      "B"
+     ],
+     "d": "3"
+    },
+    {
+     "id": "D",
+     "preds": [
+      "A"
+     ],
+     "d": "2"
+    },
+    {
+     "id": "E",
+     "preds": [
+      "C",
+      "D"
+     ],
+     "d": "1"
+    },
+    {
+     "id": "F",
+     "preds": [
+      "C"
+     ],
+     "d": "5"
+    },
+    {
+     "id": "G",
+     "preds": [
+      "C"
+     ],
+     "d": "6"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "cpmTable"
+   },
+   {
+    "id": "b",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "c",
+    "kind": "duration"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.3,
+   "c": 0.2
+  },
+  "text": {
+   "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
+   "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "cpm-2-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 2,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "d": "4"
+    },
+    {
+     "id": "B",
+     "preds": [],
+     "d": "3"
+    },
+    {
+     "id": "C",
+     "preds": [
+      "A"
+     ],
+     "d": "8"
+    },
+    {
+     "id": "D",
+     "preds": [
+      "A"
+     ],
+     "d": "7"
+    },
+    {
+     "id": "E",
+     "preds": [
+      "A"
+     ],
+     "d": "10"
+    },
+    {
+     "id": "F",
+     "preds": [
+      "C"
+     ],
+     "d": "3"
+    },
+    {
+     "id": "G",
+     "preds": [
+      "B",
+      "C"
+     ],
+     "d": "9"
+    },
+    {
+     "id": "H",
+     "preds": [
+      "E"
+     ],
+     "d": "6"
+    },
+    {
+     "id": "I",
+     "preds": [
+      "C",
+      "D"
+     ],
+     "d": "10"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "cpmTable"
+   },
+   {
+    "id": "b",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "c",
+    "kind": "duration"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.3,
+   "c": 0.2
+  },
+  "text": {
+   "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
+   "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "cpm-3-1495043544",
+  "origin": "generated",
+  "seed": 1495043544,
+  "difficulty": 3,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "d": "2"
+    },
+    {
+     "id": "B",
+     "preds": [],
+     "d": "1"
+    },
+    {
+     "id": "C",
+     "preds": [
+      "A"
+     ],
+     "d": "1"
+    },
+    {
+     "id": "D",
+     "preds": [
+      "A"
+     ],
+     "d": "5"
+    },
+    {
+     "id": "E",
+     "preds": [
+      "D"
+     ],
+     "d": "2"
+    },
+    {
+     "id": "F",
+     "preds": [
+      "D"
+     ],
+     "d": "5"
+    },
+    {
+     "id": "G",
+     "preds": [
+      "C"
+     ],
+     "d": "3"
+    },
+    {
+     "id": "H",
+     "preds": [
+      "F"
+     ],
+     "d": "1"
+    },
+    {
+     "id": "I",
+     "preds": [
+      "G"
+     ],
+     "d": "4"
+    },
+    {
+     "id": "J",
+     "preds": [
+      "B",
+      "F"
+     ],
+     "d": "2"
+    },
+    {
+     "id": "K",
+     "preds": [
+      "E"
+     ],
+     "d": "5"
+    },
+    {
+     "id": "L",
+     "preds": [
+      "H",
+      "I",
+      "J",
+      "K"
+     ],
+     "d": "2"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "cpmTable"
+   },
+   {
+    "id": "b",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "c",
+    "kind": "duration"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.3,
+   "c": 0.2
+  },
+  "text": {
+   "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
+   "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "pert-2-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 2,
+  "problem": {
+   "kind": "project",
+   "activities": [
+    {
+     "id": "A",
+     "preds": [],
+     "pert": [
+      "4",
+      "6",
+      "20"
+     ]
+    },
+    {
+     "id": "B",
+     "preds": [],
+     "pert": [
+      "4",
+      "5",
+      "12"
+     ]
+    },
+    {
+     "id": "C",
+     "preds": [
+      "B"
+     ],
+     "pert": [
+      "5",
+      "8",
+      "11"
+     ]
+    },
+    {
+     "id": "D",
+     "preds": [
+      "B"
+     ],
+     "pert": [
+      "7",
+      "9",
+      "23"
+     ]
+    },
+    {
+     "id": "E",
+     "preds": [
+      "A"
+     ],
+     "pert": [
+      "11",
+      "12",
+      "25"
+     ]
+    },
+    {
+     "id": "F",
+     "preds": [
+      "C",
+      "D"
+     ],
+     "pert": [
+      "3",
+      "3",
+      "9"
+     ]
+    },
+    {
+     "id": "G",
+     "preds": [
+      "C"
+     ],
+     "pert": [
+      "4",
+      "4",
+      "16"
+     ]
+    },
+    {
+     "id": "H",
+     "preds": [
+      "E"
+     ],
+     "pert": [
+      "8",
+      "8",
+      "8"
+     ]
+    }
+   ],
+   "deadline": "25"
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "pert",
+    "pertWhat": "te"
+   },
+   {
+    "id": "b",
+    "kind": "criticalPath"
+   },
+   {
+    "id": "c",
+    "kind": "duration"
+   },
+   {
+    "id": "d",
+    "kind": "pert",
+    "pertWhat": "variance"
+   },
+   {
+    "id": "e",
+    "kind": "pert",
+    "pertWhat": "sigma"
+   },
+   {
+    "id": "f",
+    "kind": "pert",
+    "pertWhat": "probability",
+    "t": "25"
+   }
+  ],
+  "weights": {
+   "a": 0.15,
+   "b": 0.15,
+   "c": 0.15,
+   "d": 0.15,
+   "e": 0.15,
+   "f": 0.25
+  },
+  "text": {
+   "eu": "Proiektu baten jarduerak taulan daude, hiru estimazioekin (egunak): baikorra (a), probableena (m) eta ezkorra (b). Erabili PERT: te = (a + 4m + b)/6 eta σ² = ((b − a)/6)². Proiektuaren bariantza bide kritikoko bariantzen batura da. Kalkulatu proiektua 25 egunean edo lehenago amaitzeko probabilitatea.",
+   "es": "Las actividades de un proyecto están en la tabla, con tres estimaciones (días): optimista (a), más probable (m) y pesimista (b). Usa PERT: te = (a + 4m + b)/6 y σ² = ((b − a)/6)². La varianza del proyecto es la suma de las varianzas del camino crítico. Calcula la probabilidad de terminar el proyecto en 25 días o antes."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "johnson-1-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 1,
+  "problem": {
+   "kind": "flowshop",
+   "jobs": [
+    {
+     "id": "J1",
+     "p1": "5",
+     "p2": "11"
+    },
+    {
+     "id": "J2",
+     "p1": "3",
+     "p2": "7"
+    },
+    {
+     "id": "J3",
+     "p1": "10",
+     "p2": "4"
+    },
+    {
+     "id": "J4",
+     "p1": "2",
+     "p2": "12"
+    },
+    {
+     "id": "J5",
+     "p1": "9",
+     "p2": "6"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "johnson",
+    "johnsonWhat": "sequence"
+   },
+   {
+    "id": "b",
+    "kind": "johnson",
+    "johnsonWhat": "makespan"
+   },
+   {
+    "id": "c",
+    "kind": "johnson",
+    "johnsonWhat": "idle"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.25,
+   "c": 0.25
+  },
+  "text": {
+   "eu": "5 lan bi makinatan egin behar dira, ordena berean: lehenik M1ean, gero M2an. Taulan, lan bakoitzaren denborak (h). Erabili Johnson-en araua. Makina baten denbora hila = makespan-a − makina horretako denboren batura.",
+   "es": "5 trabajos deben pasar por dos máquinas en el mismo orden: primero M1 y después M2. En la tabla, los tiempos de cada trabajo (h). Usa la regla de Johnson. Tiempo ocioso de una máquina = makespan − suma de los tiempos en esa máquina."
+  },
+  "review": "review-needed"
+ },
+ {
+  "id": "johnson-2-1",
+  "origin": "generated",
+  "seed": 1,
+  "difficulty": 2,
+  "problem": {
+   "kind": "flowshop",
+   "jobs": [
+    {
+     "id": "J1",
+     "p1": "1",
+     "p2": "7"
+    },
+    {
+     "id": "J2",
+     "p1": "12",
+     "p2": "12"
+    },
+    {
+     "id": "J3",
+     "p1": "4",
+     "p2": "8"
+    },
+    {
+     "id": "J4",
+     "p1": "9",
+     "p2": "6"
+    },
+    {
+     "id": "J5",
+     "p1": "12",
+     "p2": "6"
+    },
+    {
+     "id": "J6",
+     "p1": "6",
+     "p2": "2"
+    },
+    {
+     "id": "J7",
+     "p1": "5",
+     "p2": "3"
+    }
+   ]
+  },
+  "asks": [
+   {
+    "id": "a",
+    "kind": "johnson",
+    "johnsonWhat": "sequence"
+   },
+   {
+    "id": "b",
+    "kind": "johnson",
+    "johnsonWhat": "makespan"
+   },
+   {
+    "id": "c",
+    "kind": "johnson",
+    "johnsonWhat": "idle"
+   }
+  ],
+  "weights": {
+   "a": 0.5,
+   "b": 0.25,
+   "c": 0.25
+  },
+  "text": {
+   "eu": "7 lan bi makinatan egin behar dira, ordena berean: lehenik M1ean, gero M2an. Taulan, lan bakoitzaren denborak (h). Erabili Johnson-en araua. Makina baten denbora hila = makespan-a − makina horretako denboren batura.",
+   "es": "7 trabajos deben pasar por dos máquinas en el mismo orden: primero M1 y después M2. En la tabla, los tiempos de cada trabajo (h). Usa la regla de Johnson. Tiempo ocioso de una máquina = makespan − suma de los tiempos en esa máquina."
+  },
+  "review": "review-needed"
+ }
+]
