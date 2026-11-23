@@ -54,6 +54,16 @@ const TOPIC: Record<string, string> = {
   cpmTable: 'floats',
   criticalPath: 'cpm',
   duration: 'cpm',
+  'pert.te': 'pert',
+  'pert.variance': 'pert',
+  'pert.sigma': 'pert',
+  'pert.probability': 'pert',
+  'pert.deadline': 'pert',
+  'johnson.sequence': 'johnson',
+  'johnson.makespan': 'johnson',
+  'johnson.idle': 'johnson',
+  compare: 'balancing',
+  gantt: 'gantt',
 };
 
 /** Explanation key of an ask: its kind plus what distinguishes it. */
@@ -109,6 +119,7 @@ function compareStep(ex: Exercise, t: T): WStep {
     what: [line('LTT'), line('mostFollowers'), line('RPW'), t('wk.compare.optimal', { n: sol.kind === 'balancing' ? sol.nOptimal : 0 })],
     why: t('wk.why.compare'),
     careful: t('wk.careful.compare'),
+    topic: TOPIC.compare!,
   };
 }
 
@@ -122,6 +133,7 @@ function ganttStep(ex: Exercise, t: T): WStep {
     why: t('wk.why.gantt'),
     careful: t('wk.careful.gantt'),
     figures: true,
+    topic: TOPIC.gantt!,
   };
 }
 

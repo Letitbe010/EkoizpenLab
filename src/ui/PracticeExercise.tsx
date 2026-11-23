@@ -17,6 +17,7 @@ import { poolById } from '../data/pool';
 import { useT } from '../i18n';
 import { AnswerForm } from './AnswerForm';
 import { CpmNetwork, Gantt, PrecedenceGraph, StationBoard, type EdgeMark, type GanttRow } from './charts/Diagrams';
+import { johnsonRows } from './charts/johnsonRows';
 import { DataTable } from './DataTable';
 import { askLabel, exerciseTitle, letter, templateOf } from './describe';
 import { fmtN, fmtR } from './format';
@@ -106,24 +107,7 @@ export function Figures({ ex, answers, result }: { ex: Exercise; answers: Record
     );
   }
   if (p.kind === 'flowshop' && sol.kind === 'flowshop') {
-    const rowsOf = (seq: string[]): GanttRow[] => {
-      const s = schedule(p, seq);
-      const idleBars = (m: typeof s.m2) => {
-        const out: GanttRow['bars'] = [];
-        let tt = 0;
-        for (const x of m) {
-          if (R.toNumber(x.start) > tt) out.push({ from: tt, to: R.toNumber(x.start), kind: 'idle' });
-          out.push({ from: R.toNumber(x.start), to: R.toNumber(x.end), text: x.id, kind: 'task' });
-          tt = R.toNumber(x.end);
-        }
-        if (tt < R.toNumber(s.makespan)) out.push({ from: tt, to: R.toNumber(s.makespan), kind: 'idle' });
-        return out;
-      };
-      return [
-        { label: 'M1', bars: idleBars(s.m1) },
-        { label: 'M2', bars: idleBars(s.m2) },
-      ];
-    };
+    const rowsOf = (seq: string[]): GanttRow[] => johnsonRows(p, seq).rows;
     const sq = ex.asks.find((a) => a.kind === 'johnson' && (a.johnsonWhat ?? 'sequence') === 'sequence');
     const user = sq ? answers[sq.id]?.sequence : undefined;
     const userOk = user && user.length === p.jobs.length && new Set(user).size === user.length && user.join() !== sol.sequence.join();

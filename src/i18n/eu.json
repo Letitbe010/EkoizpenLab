@@ -269,10 +269,14 @@
   "th.lead": "Kontzeptuak, formulak eta zergatiak. Adibideetako zenbaki guztiak ebazletik kalkulatzen dira.",
   "th.example": "Adibidea",
   "th.ope": "OPEan",
-  "th.partB": "Hurrengo gaiak (PERT, Gantt, Johnson, akats ohikoak eta OPEko aurkezpena) laster.",
   "th.w.balancing": "Orekatze-mahaia: aldatu C, aplikatu heuristiko bat edo mugitu atazak eskuz",
   "th.w.cpm": "CPM simulatzailea: aldatu iraupenak eta ikusi bide kritikoa eta holgurak",
   "th.w.balancingOk": "Baliozkoa: N = {n}, η = {e}, denbora hila = {i} {u}",
   "th.w.incomplete": "Ataza guztiak esleitu arte, ez dago emaitzarik.",
-  "wk.toTheory": "→ teoria"
+  "wk.toTheory": "→ teoria",
+  "th.w.johnson": "Johnson: ordenatu lanak eskuz eta alderatu makespan-a optimoarekin",
+  "th.w.applyJohnson": "Johnson-en araua aplikatu",
+  "th.w.johnsonResult": "Makespan-a: {m} h (optimoa: {o} h).",
+  "th.w.isJohnson": "Johnson-en sekuentzia da.",
+  "th.w.optimalNotJohnson": "Optimoa da, baina ez Johnson-en araukoa."
 }

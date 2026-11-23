@@ -7,11 +7,16 @@
  *                  {{rpw:A}} {{t:A}} {{rule}}
  * Projects (CPM):  {{T}} {{paths}} {{es:A}} {{ef:A}} {{ls:A}} {{lf:A}} {{tf:A}} {{ff:A}} {{d:A}}
  *                  {{noncrit}} (first activity with float)
+ * PERT:            {{abm:A}} {{te:A}} {{var:A}} {{Te}} {{V}} {{vars}} {{sigma}} {{sdsum}}
+ *                  {{deadline}} {{z}} {{P}} (Φ of z rounded to 2 decimals) {{pert-path}}
+ * Flow shop:       {{seq}} {{mk}} {{opt}} {{idle1}} {{idle2}} {{rev}} {{revmk}} {{first}}
  */
 import { assignHeuristic, metrics, priorities } from '../core/balancing';
 import { redundantEdges } from '../core/dag';
 import type { Exercise } from '../core/model';
 import * as R from '../core/rational';
+import { johnsonSequence, schedule } from '../core/johnson';
+import { phi } from '../core/normal';
 import { solve } from '../core/solve';
 import { fmtN, fmtPct, fmtR } from './format';
 
@@ -100,6 +105,70 @@ export function fillTemplate(text: string, ex: Exercise, t: T): string {
           const r = c.rows.find((x) => !x.critical);
           if (!r) throw new TemplateError(`${ex.id}: every activity is critical`);
           return r.id;
+        }
+      }
+      const pr = sol.pert;
+      if (pr) {
+        const act = () => {
+          const x = p.activities.find((y) => y.id === a);
+          if (!x?.pert) throw new TemplateError(`${ex.id} has no PERT activity ${a}`);
+          return x;
+        };
+        const deadline = () => {
+          if (!p.deadline) throw new TemplateError(`${ex.id} has no deadline`);
+          return R.toNumber(p.deadline);
+        };
+        const z = () => (deadline() - R.toNumber(pr.Te)) / pr.sigma;
+        switch (k) {
+          case 'abm':
+            return act().pert!.map(fmtR).join(', ');
+          case 'te':
+            return fmtR(pr.te.get(act().id)!);
+          case 'var':
+            return fmtR(pr.variance.get(act().id)!);
+          case 'Te':
+            return fmtR(pr.Te);
+          case 'V':
+            return fmtR(pr.projectVariance);
+          case 'vars':
+            return pr.path.map((id) => fmtN(R.toNumber(pr.variance.get(id)!), 3)).join(' + ');
+          case 'sigma':
+            return fmtN(pr.sigma, 3);
+          case 'sdsum':
+            return fmtN(pr.path.reduce((acc, id) => acc + Math.sqrt(R.toNumber(pr.variance.get(id)!)), 0), 3);
+          case 'deadline':
+            return fmtN(deadline());
+          case 'z':
+            return fmtN(z(), 2);
+          case 'P':
+            return fmtPct(phi(Number(z().toFixed(2))), 1);
+          case 'pert-path':
+            return pr.path.join('–');
+        }
+      }
+    }
+    if (p.kind === 'flowshop' && sol.kind === 'flowshop') {
+      const swapped = { ...p, jobs: p.jobs.map((j) => ({ id: j.id, p1: j.p2, p2: j.p1 })) };
+      const rev = johnsonSequence(swapped);
+      switch (k) {
+        case 'seq':
+          return sol.sequence.join('–');
+        case 'mk':
+          return fmtR(sol.schedule.makespan);
+        case 'opt':
+          return fmtR(sol.optimal);
+        case 'idle1':
+          return fmtR(sol.schedule.idleM1);
+        case 'idle2':
+          return fmtR(sol.schedule.idleM2);
+        case 'rev':
+          return rev.join('–');
+        case 'revmk':
+          return fmtR(schedule(p, rev).makespan);
+        case 'first': {
+          // the job with the smallest time overall, and where it goes
+          const j = p.jobs.reduce((best, x) => (R.lt(R.min(x.p1, x.p2), R.min(best.p1, best.p2)) ? x : best));
+          return j.id;
         }
       }
     }

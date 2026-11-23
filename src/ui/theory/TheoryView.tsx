@@ -67,7 +67,6 @@ export function TheoryList() {
           </li>
         ))}
       </ol>
-      <p className="note">{t('th.partB')}</p>
     </section>
   );
 }

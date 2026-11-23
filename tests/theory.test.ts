@@ -10,13 +10,16 @@ import { TOPIC_IDS } from '../src/content/theory/ids';
 import { TOPICS } from '../src/content/theory/topics';
 import type { FormulaId } from '../src/content/theory/types';
 import { assignHeuristic, cycleTime, metrics, nMin, priorities, sumTimes } from '../src/core/balancing';
-import { cpm } from '../src/core/cpm';
+import { cpm, pertMean } from '../src/core/cpm';
+import { schedule } from '../src/core/johnson';
+import { phiB } from '../src/core/normal';
+import { pert, pertVariance, probabilityByDeadline } from '../src/core/pert';
 import { successors } from '../src/core/dag';
 import * as R from '../src/core/rational';
 import { poolById } from '../src/data/pool';
 import { translate } from '../src/i18n';
 import { fillTemplate } from '../src/ui/theoryTemplate';
-import { arbBalancing, arbProject } from './helpers';
+import { arbBalancing, arbFlowShop, arbProject } from './helpers';
 
 const RUNS = { numRuns: 1000 };
 
@@ -132,11 +135,65 @@ const CHECKS: Record<FormulaId, () => void> = {
       }),
       RUNS,
     ),
+  'pert-te': () =>
+    fc.assert(
+      fc.property(fc.integer({ min: 0, max: 50 }), fc.integer({ min: 0, max: 50 }), fc.integer({ min: 0, max: 50 }), (x, y, z) => {
+        const [a, m, b] = [x, y, z].sort((u, v) => u - v).map((v) => R.q(v)) as [R.Rational, R.Rational, R.Rational];
+        expect(R.eq(pertMean([a, m, b]), R.div(R.add(R.add(a, R.mul(R.q(4), m)), b), R.q(6)))).toBe(true);
+        expect(R.eq(pertVariance([a, m, b]), R.mul(R.div(R.sub(b, a), R.q(6)), R.div(R.sub(b, a), R.q(6))))).toBe(true);
+      }),
+      RUNS,
+    ),
+  'pert-variance': () =>
+    fc.assert(
+      fc.property(arbProject(9, true), (p) => {
+        const r = pert(p);
+        const act = new Map(p.activities.map((a) => [a.id, a]));
+        const te = R.sum(r.path.map((id) => pertMean(act.get(id)!.pert!)));
+        const v = R.sum(r.path.map((id) => pertVariance(act.get(id)!.pert!)));
+        expect(R.eq(r.Te, te)).toBe(true);
+        expect(R.eq(r.projectVariance, v)).toBe(true);
+        expect(Math.abs(r.sigma - Math.sqrt(R.toNumber(v)))).toBeLessThan(1e-12);
+      }),
+      RUNS,
+    ),
+  'pert-z': () =>
+    fc.assert(
+      fc.property(fc.integer({ min: 1, max: 200 }), fc.integer({ min: 1, max: 400 }), fc.integer({ min: 0, max: 300 }), (te, v9, t) => {
+        const Te = R.q(te);
+        const V = R.q(v9, 9);
+        const pr = probabilityByDeadline(Te, V, R.q(t));
+        expect(Math.abs(pr.p - phiB((t - te) / Math.sqrt(v9 / 9)))).toBeLessThan(1e-10);
+      }),
+      RUNS,
+    ),
+  'johnson-makespan': () =>
+    fc.assert(
+      fc.property(arbFlowShop(7), fc.array(fc.nat(), { minLength: 7, maxLength: 7 }), (p, keys) => {
+        const seq = p.jobs.map((j, i) => ({ id: j.id, k: keys[i]! })).sort((a, b) => a.k - b.k).map((x) => x.id);
+        const job = new Map(p.jobs.map((j) => [j.id, j]));
+        let f1 = R.ZERO;
+        let f2 = R.ZERO;
+        for (const id of seq) {
+          f1 = R.add(f1, job.get(id)!.p1);
+          f2 = R.add(R.max(f1, f2), job.get(id)!.p2);
+        }
+        expect(R.eq(schedule(p, seq).makespan, f2)).toBe(true);
+      }),
+      RUNS,
+    ),
 };
 
 function hardNumbers(s: string): string[] {
-  // the constant 0 is a rule (HT = 0, starts at 0), not data
-  return s.replace(/\{\{[^}]+\}\}/g, '').replace(/\b0\b/g, '').match(/\d+/g) ?? [];
+  // rule constants, not data: 0 (HT = 0, start at 0), 1 − P, and the machine names M1/M2
+  return (
+    s
+      .replace(/\{\{[^}]+\}\}/g, '')
+      .replace(/\b0\b/g, '')
+      .replace(/1 − P/g, '')
+      .replace(/M[12]/g, '')
+      .match(/\d+/g) ?? []
+  );
 }
 
 describe('theory topics', () => {

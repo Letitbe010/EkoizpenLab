@@ -6,11 +6,13 @@ import { useMemo, useState } from 'react';
 import { assignHeuristic, metrics, nMin } from '../../core/balancing';
 import { validateAssignment } from '../../core/balancingExact';
 import { cpm } from '../../core/cpm';
-import type { Assignment, BalancingProblem, ProjectProblem } from '../../core/model';
+import { bruteForce, johnsonSequence, johnsonSequences } from '../../core/johnson';
+import type { Assignment, BalancingProblem, FlowShopProblem, ProjectProblem } from '../../core/model';
 import * as R from '../../core/rational';
 import { poolById } from '../../data/pool';
 import { useT } from '../../i18n';
-import { AssignmentEditor } from '../AnswerForm';
+import { AssignmentEditor, SequenceEditor } from '../AnswerForm';
+import { johnsonRows } from '../charts/johnsonRows';
 import { CpmNetwork, Gantt, StationBoard } from '../charts/Diagrams';
 import { fmtN, fmtPct, fmtR } from '../format';
 
@@ -133,6 +135,37 @@ export function CpmWidget() {
   );
 }
 
-export function TheoryWidget({ w }: { w: 'balancing' | 'cpm' }) {
-  return w === 'balancing' ? <BalancingWidget /> : <CpmWidget />;
+/** Johnson: build a sequence by hand and compare its makespan with the optimum. */
+export function JohnsonWidget() {
+  const { t } = useT();
+  const p = poolById('johnson-1-1')!.problem as FlowShopProblem;
+  const [seq, setSeq] = useState<string[]>([]);
+  const best = useMemo(() => bruteForce(p), [p]);
+  const johnson = useMemo(() => johnsonSequences(p).map((x) => x.join('-')), [p]);
+  const complete = seq.length === p.jobs.length;
+  const g = complete ? johnsonRows(p, seq) : null;
+  return (
+    <div className="widget">
+      <span className="lab">{t('th.w.johnson')}</span>
+      <SequenceEditor ids={p.jobs.map((j) => j.id)} ans={{ sequence: seq }} set={(patch) => setSeq(patch.sequence ?? [])} disabled={false} />
+      <div className="row">
+        <button type="button" className="small" onClick={() => setSeq(johnsonSequence(p))}>
+          {t('th.w.applyJohnson')}
+        </button>
+      </div>
+      {g && (
+        <>
+          <p className="w-result" role="status">
+            {t('th.w.johnsonResult', { m: fmtN(g.makespan), o: fmtR(best.optimal) })}{' '}
+            {johnson.includes(seq.join('-')) ? t('th.w.isJohnson') : R.eq(R.q(g.makespan), best.optimal) ? t('th.w.optimalNotJohnson') : ''}
+          </p>
+          <Gantt rows={g.rows} total={Math.max(g.makespan, 1)} label={t('chart.gantt')} unit="h" />
+        </>
+      )}
+    </div>
+  );
+}
+
+export function TheoryWidget({ w }: { w: 'balancing' | 'cpm' | 'johnson' }) {
+  return w === 'balancing' ? <BalancingWidget /> : w === 'cpm' ? <CpmWidget /> : <JohnsonWidget />;
 }

@@ -1,4 +1,4 @@
 {
   "_comment": "Review status of each theory topic (spec §14.3): draft until the user reviews it.",
-  "status": { "lines": "draft", "precedence": "draft", "balancing": "draft", "efficiency": "draft", "cpm": "draft", "floats": "draft" }
+  "status": { "lines": "draft", "precedence": "draft", "balancing": "draft", "efficiency": "draft", "cpm": "draft", "floats": "draft", "pert": "draft", "gantt": "draft", "johnson": "draft", "mistakes": "draft", "ope": "draft" }
 }

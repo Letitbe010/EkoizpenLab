@@ -26,7 +26,7 @@ const sectionOf = (r: Route): Section =>
   r.name === 'start' ? 'home' : r.name === 'soon' ? r.section : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : r.name === 'theory' || r.name === 'theoryTopic' ? 'teoria' : 'praktika';
 
 const COMMIT = (import.meta.env.VITE_COMMIT as string | undefined)?.slice(0, 7) ?? 'dev';
-const VERSION = 'v0.7.0-a';
+const VERSION = 'v0.7.0';
 
 export function App() {
   const [lang, setLang] = useState<Lang>(loadLang);

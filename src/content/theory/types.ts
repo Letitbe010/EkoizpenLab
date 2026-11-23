@@ -15,7 +15,11 @@ export type FormulaId =
   | 'station-efficiency'
   | 'cpm-forward'
   | 'cpm-backward'
-  | 'floats';
+  | 'floats'
+  | 'pert-te'
+  | 'pert-variance'
+  | 'pert-z'
+  | 'johnson-makespan';
 
 export type Bi = { eu: string; es: string };
 
@@ -28,7 +32,7 @@ export type Block =
   | ({ t: 'note'; kind: 'careful' | 'ope' } & Bi)
   /** worked example on a pool exercise; {{…}} variables are filled from the solvers */
   | ({ t: 'example'; pool: string } & Bi)
-  | { t: 'widget'; w: 'balancing' | 'cpm' };
+  | { t: 'widget'; w: 'balancing' | 'cpm' | 'johnson' };
 
 export interface Topic {
   id: string;

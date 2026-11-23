@@ -1,9 +1,11 @@
 /**
- * Theory (spec §14.1). Part A: topics 1–6. Status "draft" until the user reviews the texts.
+ * Theory (spec §14.1). Part A: topics 1–6 (here); part B: topics 7–11 (topicsB.ts).
+ * Status "draft" until the user reviews the texts.
  * No number is written by hand in the prose: examples use {{…}} variables computed by the
  * solvers on verified pool exercises (src/ui/theoryTemplate.ts).
  */
 import status from './status.json';
+import { TOPICS_B } from './topicsB';
 import type { Topic } from './types';
 
 const st = (id: string): Topic['status'] => ((status.status as Record<string, string>)[id] === 'reviewed' ? 'reviewed' : 'draft');
@@ -289,4 +291,5 @@ export const TOPICS: Topic[] = [
       },
     ],
   },
+  ...TOPICS_B(st),
 ];

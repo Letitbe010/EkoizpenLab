@@ -370,7 +370,7 @@ export function AssignmentEditor({ tasks, ans, set, disabled, unit }: { tasks: {
   );
 }
 
-function SequenceEditor({ ids, ans, set, disabled }: { ids: string[]; ans: Answer; set: (p: Partial<Answer>) => void; disabled: boolean }) {
+export function SequenceEditor({ ids, ans, set, disabled }: { ids: string[]; ans: Answer; set: (p: Partial<Answer>) => void; disabled: boolean }) {
   const { t } = useT();
   const seq = ans.sequence ?? [];
   return (

@@ -269,10 +269,14 @@
   "th.lead": "Conceptos, fórmulas y porqués. Todos los números de los ejemplos los calcula el solucionador.",
   "th.example": "Ejemplo",
   "th.ope": "En la OPE",
-  "th.partB": "Los siguientes temas (PERT, Gantt, Johnson, errores habituales y presentación en la OPE), próximamente.",
   "th.w.balancing": "Mesa de equilibrado: cambia C, aplica una heurística o mueve tareas a mano",
   "th.w.cpm": "Simulador CPM: cambia las duraciones y mira el camino crítico y las holguras",
   "th.w.balancingOk": "Válida: N = {n}, η = {e}, tiempo ocioso = {i} {u}",
   "th.w.incomplete": "Hasta asignar todas las tareas no hay resultado.",
-  "wk.toTheory": "→ teoría"
+  "wk.toTheory": "→ teoría",
+  "th.w.johnson": "Johnson: ordena los trabajos a mano y compara el makespan con el óptimo",
+  "th.w.applyJohnson": "Aplicar la regla de Johnson",
+  "th.w.johnsonResult": "Makespan: {m} h (óptimo: {o} h).",
+  "th.w.isJohnson": "Es una secuencia de Johnson.",
+  "th.w.optimalNotJohnson": "Es óptima, pero no de la regla de Johnson."
 }
