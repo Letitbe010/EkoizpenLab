@@ -43,6 +43,11 @@ export function verifyExercise(ex: Exercise): Verdict {
         if (generated && (Math.abs(z) < 0.3 || Math.abs(z) > 2.5 || (frac > 0.4 && frac < 0.6))) reasons.push('z not readable');
       }
       if (generated && [...sol.pert.te.values()].some((t) => !R.isInteger(t))) reasons.push('non-integer te');
+      // pool / imported exercises (user decision 2026-11-23): CPM times are graded exactly, so
+      // te rounded by hand and added along a path would be marked wrong; such an exercise must
+      // be adapted (integer te or no CPM-time asks) before it enters the pool
+      const cpmTimeAsk = ex.asks.some((a) => a.kind === 'cpmTable' || a.kind === 'duration');
+      if (!generated && cpmTimeAsk && [...sol.pert.te.values()].some((t) => !R.isInteger(t))) reasons.push('non-integer te with CPM-time asks: adapt before import');
     }
   }
   if (p.kind === 'flowshop' && sol.kind === 'flowshop') {

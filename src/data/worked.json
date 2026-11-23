@@ -1,15 +1,15 @@
 {
-  "_comment": "Worked exercises (spec §15). Each one is built on a verified pool exercise (optionally a subset of its asks); every number is computed by the solvers at run time. Texts are drafts until the user reviews them. nowYou: template and level of the 'now you' exercise. extra: an additional explanation step.",
+  "_comment": "Worked exercises (spec §15). Each one is built on a verified pool exercise (optionally a subset of its asks); every number is computed by the solvers at run time. Texts reviewed by the user (2026-11-23). nowYou: template and level of the 'now you' exercise. extra: an additional explanation step.",
   "worked": [
-    { "id": "c-nmin", "pool": "spec-eg1", "asks": ["b", "c"], "nowYou": { "template": "balancing", "level": 1 }, "title": { "eu": "Ziklo-denbora eta lanpostu kopuru minimoa", "es": "Tiempo de ciclo y número mínimo de estaciones" }, "review": "draft" },
-    { "id": "orekatzea-ltt", "pool": "balancing-1-1", "nowYou": { "template": "balancing", "level": 1 }, "title": { "eu": "Orekatzea \"ataza luzeena lehenik\" arauarekin (Euskadi 2020 estiloa)", "es": "Equilibrado con la regla «tarea más larga primero» (estilo Euskadi 2020)" }, "review": "draft" },
-    { "id": "orekatzea-rpw", "pool": "balancing-2-5", "nowYou": { "template": "balancing", "level": 2 }, "title": { "eu": "Orekatzea pisu posizionalarekin", "es": "Equilibrado con el peso posicional" }, "review": "draft" },
-    { "id": "heuristikoak", "pool": "balancing-2-5", "asks": ["c", "d", "h"], "extra": "compareHeuristics", "nowYou": { "template": "balancing", "level": 3 }, "title": { "eu": "Heuristikoen alderaketa", "es": "Comparación de heurísticas" }, "review": "draft" },
-    { "id": "efizientziak", "pool": "ope-euskadi-2020-6", "nowYou": { "template": "balancing", "level": 2 }, "title": { "eu": "Efizientziak eta denbora hilak (Euskadi OPE 2020)", "es": "Eficiencias y tiempos ociosos (OPE Euskadi 2020)" }, "review": "draft" },
-    { "id": "cpm-sinplea", "pool": "spec-eg2", "nowYou": { "template": "cpm", "level": 1 }, "title": { "eu": "CPM sinplea", "es": "CPM sencillo" }, "review": "draft" },
-    { "id": "cpm-bi-bide", "pool": "cpm-3-1495043544", "nowYou": { "template": "cpm", "level": 3 }, "title": { "eu": "CPM bi bide kritikorekin", "es": "CPM con dos caminos críticos" }, "review": "draft" },
-    { "id": "pert-probabilitatea", "pool": "pert-2-1", "nowYou": { "template": "pert", "level": 2 }, "title": { "eu": "PERT eta probabilitatea", "es": "PERT y probabilidad" }, "review": "draft" },
-    { "id": "gantt", "pool": "ope-madrid-2022-7", "extra": "gantt", "nowYou": { "template": "pert", "level": 2 }, "title": { "eu": "Gantt diagrama (Madril OPE 2022)", "es": "Diagrama de Gantt (OPE Madrid 2022)" }, "review": "draft" },
-    { "id": "johnson", "pool": "johnson-1-1", "nowYou": { "template": "johnson", "level": 1 }, "title": { "eu": "Johnson-en araua bi makinatan", "es": "Regla de Johnson en dos máquinas" }, "review": "draft" }
+    { "id": "c-nmin", "pool": "spec-eg1", "asks": ["b", "c"], "nowYou": { "template": "balancing", "level": 1 }, "title": { "eu": "Ziklo-denbora eta lanpostu kopuru minimoa", "es": "Tiempo de ciclo y número mínimo de estaciones" }, "review": "reviewed" },
+    { "id": "orekatzea-ltt", "pool": "balancing-1-1", "nowYou": { "template": "balancing", "level": 1 }, "title": { "eu": "Orekatzea \"ataza luzeena lehenik\" arauarekin (Euskadi 2020 estiloa)", "es": "Equilibrado con la regla «tarea más larga primero» (estilo Euskadi 2020)" }, "review": "reviewed" },
+    { "id": "orekatzea-rpw", "pool": "balancing-2-5", "nowYou": { "template": "balancing", "level": 2 }, "title": { "eu": "Orekatzea pisu posizionalarekin", "es": "Equilibrado con el peso posicional" }, "review": "reviewed" },
+    { "id": "heuristikoak", "pool": "balancing-2-5", "asks": ["c", "d", "h"], "extra": "compareHeuristics", "nowYou": { "template": "balancing", "level": 3 }, "title": { "eu": "Heuristikoen alderaketa", "es": "Comparación de heurísticas" }, "review": "reviewed" },
+    { "id": "efizientziak", "pool": "ope-euskadi-2020-6", "nowYou": { "template": "balancing", "level": 2 }, "title": { "eu": "Efizientziak eta denbora hilak (Euskadi OPE 2020)", "es": "Eficiencias y tiempos ociosos (OPE Euskadi 2020)" }, "review": "reviewed" },
+    { "id": "cpm-sinplea", "pool": "spec-eg2", "nowYou": { "template": "cpm", "level": 1 }, "title": { "eu": "CPM sinplea", "es": "CPM sencillo" }, "review": "reviewed" },
+    { "id": "cpm-bi-bide", "pool": "cpm-3-1495043544", "nowYou": { "template": "cpm", "level": 3 }, "title": { "eu": "CPM bi bide kritikorekin", "es": "CPM con dos caminos críticos" }, "review": "reviewed" },
+    { "id": "pert-probabilitatea", "pool": "pert-2-1", "nowYou": { "template": "pert", "level": 2 }, "title": { "eu": "PERT eta probabilitatea", "es": "PERT y probabilidad" }, "review": "reviewed" },
+    { "id": "gantt", "pool": "ope-madrid-2022-7", "extra": "gantt", "nowYou": { "template": "pert", "level": 2 }, "title": { "eu": "Gantt diagrama (Madril OPE 2022)", "es": "Diagrama de Gantt (OPE Madrid 2022)" }, "review": "reviewed" },
+    { "id": "johnson", "pool": "johnson-1-1", "nowYou": { "template": "johnson", "level": 1 }, "title": { "eu": "Johnson-en araua bi makinatan", "es": "Regla de Johnson en dos máquinas" }, "review": "reviewed" }
   ]
 }

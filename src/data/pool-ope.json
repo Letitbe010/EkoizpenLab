@@ -116,7 +116,7 @@
       "eu": "Fabrikazio-planta batean ekoizpen-prozesu bat orekatu nahi da, egunean 40 pieza ekoizteko (8 ordu egunean). Taulan, pieza bat ekoizteko atazak, bakoitzaren denbora (min) eta aurretik egin beharreko atazak. Esleipenerako araurik ez da finkatzen: edozein esleipen baliodun onartzen da, lanpostu kopuru minimoarekin. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
       "es": "En una planta de fabricación se quiere equilibrar un proceso de producción para fabricar 40 piezas al día (8 horas al día). En la tabla, las tareas para fabricar una pieza, el tiempo de cada una (min) y las tareas que deben hacerse antes. No se fija regla de asignación: se acepta cualquier asignación válida, con el número mínimo de estaciones. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
     },
-    "review": "review-needed"
+    "review": "approved"
   },
   {
     "id": "ope-madrid-2022-7",
@@ -269,7 +269,7 @@
       "eu": "Erakunde batek kontabilitatea eta inbentarioen kontrola automatizatu nahi ditu. Aholkularitzak jardueren taula aurkezten du, hiru estimazioekin (egunak): baikorra (a), probableena (m) eta ezkorra (b). Erabili PERT: te = (a + 4m + b)/6 eta σ² = ((b − a)/6)²; proiektuaren bariantza bide kritikoko bariantzen batura da.",
       "es": "Una organización quiere automatizar su proceso de contabilidad y control de inventarios. La consultoría presenta la tabla de actividades, con tres estimaciones (días): optimista (a), más probable (m) y pesimista (b). Usa PERT: te = (a + 4m + b)/6 y σ² = ((b − a)/6)²; la varianza del proyecto es la suma de las varianzas del camino crítico."
     },
-    "review": "review-needed"
+    "review": "approved"
   },
   {
     "id": "spec-eg1",
@@ -384,7 +384,7 @@
       "eu": "Lerro batek 48 unitate ekoiztu behar ditu 8 orduko txandan. Taulan, unitate bat ekoizteko atazak, haien denborak (min) eta aurrekotasunak. Esleitu atazak lanpostuei \"ataza luzeena lehenik\" arauarekin; berdinketan, ordena alfabetikoa. Efizientzia (eraginkortasuna) ziklo-denborarekin kalkulatu: η = Σt / (N · C).",
       "es": "Una línea debe producir 48 unidades en un turno de 8 horas. En la tabla, las tareas para producir una unidad, sus tiempos (min) y sus precedencias. Asigna las tareas a las estaciones con la regla «tarea más larga primero»; en caso de empate, orden alfabético. Calcula la eficiencia con el tiempo de ciclo: η = Σt / (N · C)."
     },
-    "review": "review-needed"
+    "review": "approved"
   },
   {
     "id": "spec-eg2",
@@ -452,6 +452,6 @@
       "eu": "Proiektu baten jarduerak, haien iraupenak (egunak) eta aurrekotasunak taulan daude. Erabili nodoak jardueretan (AON) dituen sarea.",
       "es": "Las actividades de un proyecto, sus duraciones (días) y sus precedencias están en la tabla. Usa la red con los nodos en las actividades (AON)."
     },
-    "review": "review-needed"
+    "review": "approved"
   }
 ]

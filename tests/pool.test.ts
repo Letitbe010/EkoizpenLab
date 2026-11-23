@@ -36,10 +36,11 @@ describe('pool', () => {
 
   const pool: Exercise[] = existsSync(POOL_FILE) ? (JSON.parse(readFileSync(POOL_FILE, 'utf8')) as ExerciseJson[]).map(exerciseFromJson) : [];
 
-  it.each(pool.map((e) => [e.id, e] as const))('%s: verified, perfect answers 10/10, waiting for review', (_id, e) => {
+  it.each(pool.map((e) => [e.id, e] as const))('%s: verified, perfect answers 10/10, approved or waiting for review', (_id, e) => {
     expect(verifyExercise(e).reasons).toEqual([]);
     expect(gradeExercise(e, perfectAnswers(e)).score10).toBeCloseTo(10, 12);
-    expect(e.review).toBe('review-needed');
+    // OPE and adapted entries approved by the user (2026-11-23); generated pins stay review-needed
+    expect(e.review).toBe(e.origin === 'generated' ? 'review-needed' : 'approved');
   });
 
   it('pinned generated exercises rebuild from their stored seed', () => {

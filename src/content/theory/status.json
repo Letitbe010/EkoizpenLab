@@ -1,4 +1,16 @@
 {
-  "_comment": "Review status of each theory topic (spec §14.3): draft until the user reviews it.",
-  "status": { "lines": "draft", "precedence": "draft", "balancing": "draft", "efficiency": "draft", "cpm": "draft", "floats": "draft", "pert": "draft", "gantt": "draft", "johnson": "draft", "mistakes": "draft", "ope": "draft" }
+  "_comment": "Review status of each theory topic (spec §14.3): reviewed by the user 2026-11-23.",
+  "status": {
+    "lines": "reviewed",
+    "precedence": "reviewed",
+    "balancing": "reviewed",
+    "efficiency": "reviewed",
+    "cpm": "reviewed",
+    "floats": "reviewed",
+    "pert": "reviewed",
+    "gantt": "reviewed",
+    "johnson": "reviewed",
+    "mistakes": "reviewed",
+    "ope": "reviewed"
+  }
 }

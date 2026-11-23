@@ -355,9 +355,9 @@ describe('grader: EG3 Johnson', () => {
   });
 });
 
-// ------------------------------------------------------------------ known limitation (open question)
+// ------------------------------------------------------------------ non-integer te: graded exactly (user decision)
 
-describe('grader: CPM times with non-integer te (open question to the user)', () => {
+describe('grader: CPM times with non-integer te (exact by user decision 2026-11-23)', () => {
   it('te rounded to 3 decimals and added along a path is NOT accepted (exact grading)', () => {
     // te(A) = (5 + 4·7 + 13)/6 = 23/3 = 7.667; te(B) = (6 + 4·8 + 14)/6 = 26/3 = 8.667; T = 49/3
     const p: ProjectProblem = {
@@ -370,5 +370,22 @@ describe('grader: CPM times with non-integer te (open question to the user)', ()
     const E = ex(p, [{ id: 'c', kind: 'duration' }]);
     expect(one(E, { c: { value: '16,333' } }, 'c').status).toBe('correct');
     expect(one(E, { c: { value: '16,334' } }, 'c').status).toBe('wrong'); // 7,667 + 8,667
+  });
+});
+
+describe('import rule for non-integer te (user decision 2026-11-23)', () => {
+  it('a pool exercise with non-integer te and CPM-time asks is flagged by verifyExercise', async () => {
+    const { verifyExercise } = await import('../src/core/generator');
+    const p: ProjectProblem = {
+      kind: 'project',
+      activities: [
+        { id: 'A', preds: [], pert: [R.q(5), R.q(7), R.q(13)] },
+        { id: 'B', preds: ['A'], pert: [R.q(6), R.q(8), R.q(14)] },
+      ],
+    };
+    const flagged = { ...ex(p, [{ id: 'c', kind: 'duration' }]), origin: 'ope' as const };
+    expect(verifyExercise(flagged).reasons.join()).toMatch(/non-integer te with CPM-time asks/);
+    const ok = { ...ex(p, [{ id: 's', kind: 'pert', pertWhat: 'sigma' }]), origin: 'ope' as const };
+    expect(verifyExercise(ok).reasons.join()).not.toMatch(/non-integer te/);
   });
 });
