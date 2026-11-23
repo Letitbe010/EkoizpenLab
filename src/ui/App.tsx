@@ -1,42 +1,73 @@
+/**
+ * App shell (spec §13.1): four sections (side bar ≥ 900 px, bottom bar below), language and
+ * settings always in the header, home one tap away, first-visit intro, theme setting.
+ */
 import { Suspense, lazy, useEffect, useState } from 'react';
 import { type Lang, LangContext, translate } from '../i18n';
+import { ExamRun, ExamStart } from './ExamView';
+import { AboutPage, Intro, ProgressPage, SettingsPage, StartPage } from './pages';
 import { PracticeExercise } from './PracticeExercise';
 import { PracticeHome } from './PracticeHome';
+import { setLastRoute, useProgress } from './progress';
+import { type Route, useRoute } from './router';
+import { loadLang, saveLang } from './store';
 import { WorkedItem, WorkedList } from './WorkedView';
 
 // theory (KaTeX + texts) is loaded only when opened
 const TheoryList = lazy(() => import('./theory/TheoryView').then((m) => ({ default: m.TheoryList })));
 const TheoryTopic = lazy(() => import('./theory/TheoryView').then((m) => ({ default: m.TheoryTopic })));
-import { type Route, useRoute } from './router';
-import { loadLang, saveLang } from './store';
 
-type Section = 'home' | 'teoria' | 'ebatziak' | 'praktika' | 'aurrerapena';
+type Section = 'home' | 'teoria' | 'ebatziak' | 'praktika' | 'aurrerapena' | 'other';
 
-const NAV: { key: string; section: Exclude<Section, 'home'>; icon: string }[] = [
+const NAV: { key: string; section: Exclude<Section, 'home' | 'other'>; icon: string }[] = [
   { key: 'nav.theory', section: 'teoria', icon: 'T' },
   { key: 'nav.worked', section: 'ebatziak', icon: 'E' },
   { key: 'nav.practice', section: 'praktika', icon: 'P' },
   { key: 'nav.progress', section: 'aurrerapena', icon: 'A' },
 ];
 
-const TOPICS = ['balancing', 'cpm', 'pert', 'johnson'] as const;
-const STEPS = ['theory', 'worked', 'practice', 'exam'] as const;
-
-const sectionOf = (r: Route): Section =>
-  r.name === 'start' ? 'home' : r.name === 'soon' ? r.section : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : r.name === 'theory' || r.name === 'theoryTopic' ? 'teoria' : 'praktika';
-
-const COMMIT = (import.meta.env.VITE_COMMIT as string | undefined)?.slice(0, 7) ?? 'dev';
-const VERSION = 'v0.7.0';
+function sectionOf(r: Route): Section {
+  switch (r.name) {
+    case 'start':
+      return 'home';
+    case 'worked':
+    case 'workedItem':
+      return 'ebatziak';
+    case 'theory':
+    case 'theoryTopic':
+      return 'teoria';
+    case 'practice':
+    case 'generated':
+    case 'pool':
+    case 'exam':
+    case 'examRun':
+      return 'praktika';
+    case 'progress':
+      return 'aurrerapena';
+    default:
+      return 'other';
+  }
+}
 
 export function App() {
   const [lang, setLang] = useState<Lang>(loadLang);
   const route = useRoute();
+  const progress = useProgress();
   const section = sectionOf(route);
   const t = (k: string, v?: Record<string, string | number>) => translate(lang, k, v);
   useEffect(() => {
     document.documentElement.lang = lang;
     saveLang(lang);
   }, [lang]);
+  const theme = progress.settings.theme;
+  useEffect(() => {
+    if (theme === 'auto') document.documentElement.removeAttribute('data-theme');
+    else document.documentElement.setAttribute('data-theme', theme);
+  }, [theme]);
+  // "continue where you left off": exercises, worked exercises and theory topics
+  useEffect(() => {
+    if (['generated', 'pool', 'workedItem', 'theoryTopic'].includes(route.name)) setLastRoute(window.location.hash);
+  }, [route]);
 
   const link = (n: (typeof NAV)[number]) => {
     const on = n.section === section;
@@ -53,7 +84,7 @@ export function App() {
   return (
     <LangContext.Provider value={lang}>
       <div className="app">
-        <nav className="side" aria-label={t('nav.home')}>
+        <nav className="side" aria-label={t('nav.main')}>
           <a className="brand" href="#/">
             <small>{t('app.kicker')}</small>
             <b>EkoizpenLab</b>
@@ -64,13 +95,16 @@ export function App() {
             ))}
           </ul>
           <p className="meta">
-            {VERSION} · {COMMIT} · {__BUILD_DATE__}
+            v{__APP_VERSION__} · {__COMMIT__} · {__BUILD_DATE__}
           </p>
         </nav>
         <div className="main">
           <header className="top">
             <a className="brand mobile-only" href="#/" aria-label={t('nav.home')}>
               <b>EkoizpenLab</b>
+            </a>
+            <a className="home-link" href="#/" aria-current={section === 'home' ? 'page' : undefined}>
+              {t('nav.home')}
             </a>
             <div className="lang" role="group" aria-label="Hizkuntza / Idioma">
               {(['eu', 'es'] as const).map((l) => (
@@ -79,8 +113,12 @@ export function App() {
                 </button>
               ))}
             </div>
+            <a className="settings-link" href="#/ezarpenak" aria-label={t('set.title')} aria-current={route.name === 'settings' ? 'page' : undefined}>
+              ⚙
+            </a>
           </header>
           <main>
+            {route.name === 'start' && <StartPage />}
             {route.name === 'practice' && <PracticeHome />}
             {route.name === 'generated' && (
               <PracticeExercise key={`${route.template}-${route.level}-${route.seed}`} source={{ kind: 'generated', template: route.template, level: route.level, seed: route.seed }} />
@@ -92,48 +130,21 @@ export function App() {
               {route.name === 'theory' && <TheoryList />}
               {route.name === 'theoryTopic' && <TheoryTopic key={route.id} id={route.id} />}
             </Suspense>
-            {route.name === 'start' && (
-              <section className="card">
-                <h1>{t('home.title')}</h1>
-                <p className="lead">{t('home.lead')}</p>
-                <h2 className="sec">{t('home.path')}</h2>
-                <ol className="path">
-                  {STEPS.map((s) => (
-                    <li key={s}>{t(`home.step.${s}`)}</li>
-                  ))}
-                </ol>
-                <h2 className="sec">{t('home.topics')}</h2>
-                <div className="topics">
-                  {TOPICS.map((k) => (
-                    <div key={k} className="topic">
-                      <h3>{t(`topic.${k}`)}</h3>
-                      <p>{t(`topic.${k}.d`)}</p>
-                    </div>
-                  ))}
-                </div>
-                <p className="note">{t('status.wip')}</p>
-                <div className="actions">
-                  <a className="btn primary" href="#/praktika">
-                    {t('home.go')}
-                  </a>
-                </div>
-              </section>
-            )}
-            {route.name === 'soon' && (
-              <section className="card">
-                <h1>{t(NAV.find((n) => n.section === section)!.key)}</h1>
-                <p className="note">{t('nav.soon')}</p>
-              </section>
-            )}
+            {route.name === 'exam' && <ExamStart />}
+            {route.name === 'examRun' && <ExamRun key={route.seed} seed={route.seed} minutes={route.minutes} />}
+            {route.name === 'progress' && <ProgressPage />}
+            {route.name === 'settings' && <SettingsPage setLang={setLang} />}
+            {route.name === 'about' && <AboutPage />}
           </main>
         </div>
-        <nav className="bottom" aria-label={t('nav.home')}>
+        <nav className="bottom" aria-label={t('nav.main')}>
           {NAV.map((n) => (
             <span key={n.key} className="bottom-item">
               {link(n)}
             </span>
           ))}
         </nav>
+        {!progress.introSeen && <Intro />}
       </div>
     </LangContext.Provider>
   );

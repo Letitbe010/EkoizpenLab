@@ -1,7 +1,7 @@
 {
   "name": "ekoizpenlab",
   "private": true,
-  "version": "0.7.0",
+  "version": "0.8.0",
   "type": "module",
   "description": "EkoizpenLab: production planning exercise trainer (line balancing, CPM, PERT, Gantt, Johnson) for the Basque OPE 1508 (Fabrikazio Mekanikoaren Antolamendua eta Proiektuak)",
   "license": "MIT",
@@ -14,7 +14,10 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "oracle": "vitest run tests/oracle.test.ts",
-    "oracle:py": "python tools/oracle/oracle.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/cases.json src/data/pool.json"
+    "oracle:py": "python tools/oracle/oracle.py tools/oracle/out/oracle.json tests/golden/golden.json tests/oracle/cases.json src/data/pool.json",
+    "icons": "node tools/make-icons.mjs",
+    "usability": "node tools/usability.mjs http://localhost:4189/EkoizpenLab/",
+    "a11y": "node tools/a11y.mjs http://localhost:4189/EkoizpenLab/"
   },
   "dependencies": {
     "@types/katex": "^0.16.7",
@@ -28,6 +31,7 @@
     "@types/react": "18.3.18",
     "@types/react-dom": "18.3.5",
     "@vitejs/plugin-react": "4.3.4",
+    "axe-core": "^4.10.2",
     "eslint": "9.17.0",
     "eslint-plugin-react-hooks": "5.1.0",
     "fast-check": "3.23.2",
@@ -36,6 +40,7 @@
     "typescript": "5.7.2",
     "typescript-eslint": "8.18.2",
     "vite": "6.0.6",
+    "vite-plugin-pwa": "^0.21.1",
     "vitest": "3.0.5"
   }
 }

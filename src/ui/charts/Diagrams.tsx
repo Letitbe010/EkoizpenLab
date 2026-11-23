@@ -58,7 +58,7 @@ export function PrecedenceGraph({ nodes, sub, edges, critical, label }: GraphPro
   const R = 20;
   return (
     <figure className="diagram">
-      <div className="scroll">
+      <div className="scroll" tabIndex={0}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3, minWidth: Math.min(W * 0.75, 560) }}>
         <defs>
           {(['normal', 'ok', 'missing', 'extra', 'critical'] as EdgeMark[]).map((m) => (
@@ -138,7 +138,7 @@ export function CpmNetwork({ boxes, label }: { boxes: CpmBox[]; label: string })
   const crit = new Set(boxes.filter((b) => b.critical).map((b) => b.id));
   return (
     <figure className="diagram">
-      <div className="scroll">
+      <div className="scroll" tabIndex={0}>
       <svg viewBox={`0 0 ${W} ${H}`} role="img" aria-label={label} style={{ maxWidth: W * 1.3, minWidth: Math.min(W * 0.85, 620) }}>
         <defs>
           {(['normal', 'critical'] as const).map((m) => (
@@ -175,7 +175,7 @@ export function CpmNetwork({ boxes, label }: { boxes: CpmBox[]; label: string })
       </svg>
       </div>
       <figcaption className="legend">
-        <span>ES | id | EF</span> <span>LS | d | LF</span> <span className="lg critical">━ {t('legend.critical')}</span>
+        <span>ES | id | EF</span> <span>LS | d | LF</span> <span className="lg critical"><i aria-hidden="true">━</i> {t('legend.critical')}</span>
       </figcaption>
     </figure>
   );
@@ -232,7 +232,7 @@ export function StationBoard({ stations, c, unit, label, dashed }: { stations: S
         </text>
       </svg>
       <figcaption className="legend">
-        <span className="lg cline">‒ ‒ C = {String(c).replace('.', ',')} {unit}</span>
+        <span className="lg cline"><i aria-hidden="true">‒ ‒</i> C = {String(c).replace('.', ',')} {unit}</span>
       </figcaption>
     </figure>
   );

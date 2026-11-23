@@ -2,10 +2,11 @@
  * Worked exercises (spec §15.2): "next step" mode or "show all"; each step with
  * what / why / careful. At the end: "now you" opens a new exercise of the same template.
  */
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { poolById } from '../data/pool';
 import { useT } from '../i18n';
 import { DataTable } from './DataTable';
+import { markWorked } from './progress';
 import { Figures } from './PracticeExercise';
 import { hrefOf, randomSeed } from './router';
 import { TOPIC_IDS } from '../content/theory/ids';
@@ -38,6 +39,10 @@ export function WorkedItem({ id }: { id: string }) {
   const ex = entry ? poolById(entry.pool) : undefined;
   const steps = useMemo(() => (ex && entry ? buildWorked(ex, entry, t) : []), [ex, entry, lang]); // eslint-disable-line react-hooks/exhaustive-deps
   const [shown, setShown] = useState(1);
+  // a worked exercise counts as done once every step has been shown
+  useEffect(() => {
+    if (entry && steps.length > 0 && shown >= steps.length) markWorked(entry.id);
+  }, [entry, steps.length, shown]);
   if (!entry || !ex)
     return (
       <section className="card">

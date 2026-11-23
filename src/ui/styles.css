@@ -332,15 +332,12 @@ ol.wsteps { list-style: none; padding: 0; }
 .widget .lab, .chart figcaption { text-transform: none; letter-spacing: .02em; }
 
 /* ---------- EkoizpenLab home ---------- */
-ol.path { counter-reset: step; }
-ol.path li { counter-increment: step; display: flex; gap: 10px; align-items: center; background: var(--soft); border: 1px solid var(--line); border-radius: 12px; padding: 10px 14px; }
-ol.path li::before { content: counter(step); display: inline-flex; align-items: center; justify-content: center; width: 28px; height: 28px; border-radius: 50%; background: var(--ink); color: var(--card); font-weight: 700; font-size: 14px; flex: 0 0 auto; }
 .topics { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); margin-bottom: 16px; }
 .topic { border: 1px solid var(--line); border-radius: 12px; padding: 4px 14px 10px; background: var(--surface); }
 .topic p { margin: 0; color: var(--text2); font-size: 15px; }
 
 /* ---------- EkoizpenLab phase 5: diagrams and editors ---------- */
-:root { --critical: #c62828; --cline: #e07000; --slack: #c9d6e6; --task: #6b7f99;
+:root { --critical: #c62828; --cline: #a65200; --slack: #c9d6e6; --task: #6b7f99;
   --st0: #dbe8fb; --st1: #e3f4ea; --st2: #fdf0d9; --st3: #f3e3f6; --st4: #e0f2f3; --st5: #f7e1e1; }
 @media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --critical: #ff7b7b; --cline: #ffab4d; --slack: #3a4a5e; --task: #8ea3bd;
   --st0: #24364f; --st1: #1f3b2e; --st2: #43361d; --st3: #3a2a40; --st4: #1d3a3c; --st5: #432526; } }
@@ -412,3 +409,16 @@ button.station .load { font-size: 12.5px; color: var(--muted); }
 .stepper-ctl > span { min-width: 1.6em; text-align: center; font-variant-numeric: tabular-nums; }
 .theory .tex { overflow-x: auto; max-width: 100%; }
 .widget, .theory, .example, .layer { min-width: 0; max-width: 100%; }
+.exam-ex { border-top: 1px solid var(--line); margin-top: 18px; padding-top: 6px; min-width: 0; }
+.exam-ex h2 { font-size: 19px; }
+.tag.clock { font-weight: 700; font-variant-numeric: tabular-nums; }
+.step-card .btn { align-self: center; }
+/* a11y (axe, WCAG 2.1 AA): legend text in normal colour, only the symbol coloured */
+.legend .lg { color: var(--text2); }
+.lg.critical i { color: var(--critical); } .lg.ok i { color: var(--ok); } .lg.missing i, .lg.extra i { color: var(--bad); }
+.lg.slack i { color: var(--slack); } .lg.cline i { color: var(--cline); } .lg.idle i { color: var(--muted); }
+.lg i { font-style: normal; }
+.widget { color: var(--ink); }
+.scroll:focus-visible, .tex:focus-visible { outline: 3px solid var(--A); outline-offset: 2px; }
+@media (prefers-color-scheme: dark) { :root:not([data-theme="light"]) { --Z: #ff8ac8; } }
+:root[data-theme="dark"] { --Z: #ff8ac8; }

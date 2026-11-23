@@ -9,7 +9,7 @@ export function DataTable({ ex }: { ex: Exercise }) {
   return (
     <div className="data">
       <h2 className="sec">{t('data.title')}</h2>
-      <div className="scroll">
+      <div className="scroll" tabIndex={0}>
         {p.kind === 'balancing' && (
           <table className="dtable">
             <thead>

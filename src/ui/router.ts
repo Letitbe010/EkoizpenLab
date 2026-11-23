@@ -6,7 +6,8 @@
  *   #/praktika/pool/<id>                     → pool exercise
  *   #/ebatziak, #/ebatziak/<id>              → worked exercises
  *   #/teoria, #/teoria/<id>                  → theory
- *   #/aurrerapena                            → progress (phase 8)
+ *   #/azterketa, #/azterketa/<seed>/<min>    → exam mode
+ *   #/aurrerapena, #/ezarpenak, #/honi-buruz → progress, settings, about
  */
 import { useEffect, useState } from 'react';
 
@@ -19,7 +20,11 @@ export type Route =
   | { name: 'workedItem'; id: string }
   | { name: 'theory' }
   | { name: 'theoryTopic'; id: string }
-  | { name: 'soon'; section: 'aurrerapena' };
+  | { name: 'exam' }
+  | { name: 'examRun'; seed: number; minutes: number }
+  | { name: 'progress' }
+  | { name: 'settings' }
+  | { name: 'about' };
 
 export function parseHash(hash: string): Route {
   const p = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
@@ -31,7 +36,13 @@ export function parseHash(hash: string): Route {
   }
   if (p[0] === 'ebatziak') return p[1] ? { name: 'workedItem', id: p[1] } : { name: 'worked' };
   if (p[0] === 'teoria') return p[1] ? { name: 'theoryTopic', id: p[1] } : { name: 'theory' };
-  if (p[0] === 'aurrerapena') return { name: 'soon', section: p[0] };
+  if (p[0] === 'azterketa') {
+    if (p[1] && /^\d+$/.test(p[1]) && p[2] && /^\d+$/.test(p[2])) return { name: 'examRun', seed: Number(p[1]), minutes: Number(p[2]) };
+    return { name: 'exam' };
+  }
+  if (p[0] === 'aurrerapena') return { name: 'progress' };
+  if (p[0] === 'ezarpenak') return { name: 'settings' };
+  if (p[0] === 'honi-buruz') return { name: 'about' };
   return { name: 'start' };
 }
 
@@ -51,8 +62,16 @@ export function hrefOf(r: Route): string {
       return '#/teoria';
     case 'theoryTopic':
       return `#/teoria/${encodeURIComponent(r.id)}`;
-    case 'soon':
-      return `#/${r.section}`;
+    case 'exam':
+      return '#/azterketa';
+    case 'examRun':
+      return `#/azterketa/${r.seed}/${r.minutes}`;
+    case 'progress':
+      return '#/aurrerapena';
+    case 'settings':
+      return '#/ezarpenak';
+    case 'about':
+      return '#/honi-buruz';
     default:
       return '#/';
   }

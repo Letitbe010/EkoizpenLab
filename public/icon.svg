@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="96" fill="#0f1b2d"/>
+  <!-- yamazumi: three balanced stations under the cycle-time line, as in the app's charts -->
+  <line x1="88" y1="150" x2="424" y2="150" stroke="#ffab4d" stroke-width="14" stroke-dasharray="30 18" stroke-linecap="round"/>
+  <rect x="104" y="196" width="80" height="96" rx="8" fill="#dbe8fb"/>
+  <rect x="104" y="292" width="80" height="120" rx="8" fill="#7fb0ff"/>
+  <rect x="216" y="180" width="80" height="140" rx="8" fill="#e3f4ea"/>
+  <rect x="216" y="320" width="80" height="92" rx="8" fill="#4fd1a1"/>
+  <rect x="328" y="210" width="80" height="70" rx="8" fill="#fdf0d9"/>
+  <rect x="328" y="280" width="80" height="132" rx="8" fill="#ffc266"/>
+</svg>

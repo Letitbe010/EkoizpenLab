@@ -1,18 +1,20 @@
 /** Theory section (spec §14): list of topics and one topic with its blocks (KaTeX loaded here only). */
 import katex from 'katex';
 import 'katex/dist/katex.min.css';
-import { useMemo } from 'react';
+import { useEffect, useMemo } from 'react';
 import { TOPICS } from '../../content/theory/topics';
 import type { Block } from '../../content/theory/types';
 import { poolById } from '../../data/pool';
 import { useT } from '../../i18n';
+import { markTheory } from '../progress';
 import { hrefOf } from '../router';
 import { fillTemplate } from '../theoryTemplate';
 import { TheoryWidget } from './widgets';
 
 function Tex({ tex }: { tex: string }) {
   const html = useMemo(() => katex.renderToString(tex, { displayMode: true, throwOnError: false, output: 'htmlAndMathml' }), [tex]);
-  return <div className="tex" dangerouslySetInnerHTML={{ __html: html }} />;
+  // focusable: a long formula scrolls horizontally on a phone
+  return <div className="tex" tabIndex={0} dangerouslySetInnerHTML={{ __html: html }} />;
 }
 
 function BlockView({ b }: { b: Block }) {
@@ -73,6 +75,7 @@ export function TheoryList() {
 
 export function TheoryTopic({ id }: { id: string }) {
   const { t, lang } = useT();
+  useEffect(() => markTheory(id), [id]);
   const i = TOPICS.findIndex((x) => x.id === id);
   const tp = TOPICS[i];
   if (!tp)

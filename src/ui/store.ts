@@ -29,3 +29,12 @@ export const saveLang = (l: Lang): void => write('lang', l);
 
 export const loadAnswers = (exerciseId: string): Record<string, Answer> => read(`answers.${exerciseId}`, {});
 export const saveAnswers = (exerciseId: string, a: Record<string, Answer>): void => write(`answers.${exerciseId}`, a);
+
+/** Exam in progress: start time, answers per exercise and whether it was graded. */
+export interface ExamState {
+  startedAt: number;
+  answers: Record<string, Record<string, Answer>>;
+  graded: boolean;
+}
+export const loadExam = (seed: number): ExamState | null => read<ExamState | null>(`exam.${seed}`, null);
+export const saveExam = (seed: number, s: ExamState): void => write(`exam.${seed}`, s);

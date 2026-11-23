@@ -23,6 +23,8 @@ import { askLabel, exerciseTitle, letter, templateOf } from './describe';
 import { fmtN, fmtR } from './format';
 import { hrefOf, randomSeed } from './router';
 import { solutionLines } from './solution';
+import { recordAttempts } from './progress';
+import { attemptsOf } from './record';
 import { loadAnswers, saveAnswers } from './store';
 
 export type ExerciseSource = { kind: 'generated'; template: string; level: number; seed: number } | { kind: 'pool'; id: string };
@@ -72,7 +74,7 @@ export function Figures({ ex, answers, result }: { ex: Exercise; answers: Record
       <div className="figs">
         <h3>{t('chart.precedence')}</h3>
         <PrecedenceGraph nodes={p.tasks.map((x) => ({ id: x.id, preds: x.preds }))} sub={Object.fromEntries(p.tasks.map((x) => [x.id, fmtR(x.t)]))} edges={edges} label={t('chart.precedence')} />
-        {prRes && <p className="legend"><span className="lg ok">━ {t('legend.ok')}</span> <span className="lg missing">‒ ‒ {t('legend.missing')}</span> <span className="lg extra">━ {t('legend.extra')}</span></p>}
+        {prRes && <p className="legend"><span className="lg ok"><i aria-hidden="true">━</i> {t('legend.ok')}</span> <span className="lg missing"><i aria-hidden="true">‒ ‒</i> {t('legend.missing')}</span> <span className="lg extra"><i aria-hidden="true">━</i> {t('legend.extra')}</span></p>}
         <h3>{t('chart.stations')}</h3>
         <StationBoard stations={board(sol.reference)} c={c} unit={p.unit} label={t('chart.stations')} />
         {userValid && !sameAsRef && (
@@ -102,7 +104,7 @@ export function Figures({ ex, answers, result }: { ex: Exercise; answers: Record
         />
         <h3>{t('chart.gantt')}</h3>
         <Gantt rows={rows} total={R.toNumber(c.duration)} label={t('chart.gantt')} unit={t('chart.days')} />
-        <p className="legend"><span className="lg critical">█ {t('legend.critical')}</span> <span className="lg slack">█ {t('legend.slack')}</span></p>
+        <p className="legend"><span className="lg critical"><i aria-hidden="true">█</i> {t('legend.critical')}</span> <span className="lg slack"><i aria-hidden="true">█</i> {t('legend.slack')}</span></p>
       </div>
     );
   }
@@ -121,7 +123,7 @@ export function Figures({ ex, answers, result }: { ex: Exercise; answers: Record
             <Gantt rows={rowsOf(user)} total={Math.max(R.toNumber(schedule(p, user).makespan), 1)} label={t('chart.yourGantt', { m: '' })} unit="h" />
           </>
         )}
-        <p className="legend"><span className="lg idle">▨ {t('legend.idle')}</span></p>
+        <p className="legend"><span className="lg idle"><i aria-hidden="true">▨</i> {t('legend.idle')}</span></p>
       </div>
     );
   }
@@ -152,7 +154,9 @@ export function PracticeExercise({ source }: { source: ExerciseSource }) {
       return next;
     });
   const check = () => {
-    setResult(gradeExercise(ex, answers));
+    const res = gradeExercise(ex, answers);
+    recordAttempts(attemptsOf(ex, res));
+    setResult(res);
     setStep(2);
   };
   const graded = step >= 2 && result;

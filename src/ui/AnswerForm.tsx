@@ -194,7 +194,7 @@ function AskEditor({ ex, ask, ans, set, res, disabled, label }: EditorProps) {
     case 'cpmTable':
       if (p.kind !== 'project') return null;
       return (
-        <div className="scroll">
+        <div className="scroll" tabIndex={0}>
           <table className="dtable cpm-input">
             <thead>
               <tr>
