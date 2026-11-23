@@ -265,5 +265,14 @@
   "wk.why.gantt": "Cada barra va de ES a EF; las actividades con holgura pueden retrasarse hasta LF sin retrasar el proyecto.",
   "wk.careful.gantt": "Escala de tiempo explícita y camino crítico destacado; no dibujes las actividades desde LS salvo que se pida.",
   "wk.summary.title": "Resultados",
-  "wk.summary.seeStep": "ver el paso"
+  "wk.summary.seeStep": "ver el paso",
+  "th.lead": "Conceptos, fórmulas y porqués. Todos los números de los ejemplos los calcula el solucionador.",
+  "th.example": "Ejemplo",
+  "th.ope": "En la OPE",
+  "th.partB": "Los siguientes temas (PERT, Gantt, Johnson, errores habituales y presentación en la OPE), próximamente.",
+  "th.w.balancing": "Mesa de equilibrado: cambia C, aplica una heurística o mueve tareas a mano",
+  "th.w.cpm": "Simulador CPM: cambia las duraciones y mira el camino crítico y las holguras",
+  "th.w.balancingOk": "Válida: N = {n}, η = {e}, tiempo ocioso = {i} {u}",
+  "th.w.incomplete": "Hasta asignar todas las tareas no hay resultado.",
+  "wk.toTheory": "→ teoría"
 }

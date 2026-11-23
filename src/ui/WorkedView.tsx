@@ -8,6 +8,7 @@ import { useT } from '../i18n';
 import { DataTable } from './DataTable';
 import { Figures } from './PracticeExercise';
 import { hrefOf, randomSeed } from './router';
+import { TOPIC_IDS } from '../content/theory/ids';
 import { buildWorked, WORKED } from './worked';
 
 export function WorkedList() {
@@ -70,6 +71,12 @@ export function WorkedItem({ id }: { id: string }) {
             {s.why && (
               <p className="why">
                 <b>{t('wk.whyLabel')}:</b> {s.why}
+                {s.topic && TOPIC_IDS.includes(s.topic) && (
+                  <>
+                    {' '}
+                    <a href={hrefOf({ name: 'theoryTopic', id: s.topic })}>{t('wk.toTheory')}</a>
+                  </>
+                )}
               </p>
             )}
             {s.careful && (

@@ -407,3 +407,8 @@ button.station .load { font-size: 12.5px; color: var(--muted); }
 .ask .scroll { max-width: 100%; }
 .steps, .wsteps, .wstep, .diagram, .figs > * { min-width: 0; max-width: 100%; }
 .diagram > .scroll { max-width: 100%; }
+.w-result { font-weight: 600; margin: 8px 0; }
+.stepper-ctl { display: inline-flex; align-items: center; gap: 4px; border: 1px solid var(--line); border-radius: 10px; padding: 2px 6px; }
+.stepper-ctl > span { min-width: 1.6em; text-align: center; font-variant-numeric: tabular-nums; }
+.theory .tex { overflow-x: auto; max-width: 100%; }
+.widget, .theory, .example, .layer { min-width: 0; max-width: 100%; }

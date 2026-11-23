@@ -308,7 +308,7 @@ function PrecedenceEditor({ ids, ans, set, disabled, label }: { ids: string[]; a
   );
 }
 
-function AssignmentEditor({ tasks, ans, set, disabled, unit }: { tasks: { id: string; t: number; show: string }[]; ans: Answer; set: (p: Partial<Answer>) => void; disabled: boolean; unit: string }) {
+export function AssignmentEditor({ tasks, ans, set, disabled, unit }: { tasks: { id: string; t: number; show: string }[]; ans: Answer; set: (p: Partial<Answer>) => void; disabled: boolean; unit: string }) {
   const { t } = useT();
   const [picked, setPicked] = useState<string | null>(null);
   const stations = ans.stations ?? [];

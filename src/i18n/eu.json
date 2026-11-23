@@ -265,5 +265,14 @@
   "wk.why.gantt": "Barra bakoitza ES-tik EF-ra doa; holgura duten jarduerak LF-raino atzera daitezke proiektua atzeratu gabe.",
   "wk.careful.gantt": "Denbora-eskala esplizitua eta bide kritikoa nabarmenduta; ez marraztu jarduerak LS-tik, ariketak hala eskatzen ez badu.",
   "wk.summary.title": "Emaitzak",
-  "wk.summary.seeStep": "ikus urratsa"
+  "wk.summary.seeStep": "ikus urratsa",
+  "th.lead": "Kontzeptuak, formulak eta zergatiak. Adibideetako zenbaki guztiak ebazletik kalkulatzen dira.",
+  "th.example": "Adibidea",
+  "th.ope": "OPEan",
+  "th.partB": "Hurrengo gaiak (PERT, Gantt, Johnson, akats ohikoak eta OPEko aurkezpena) laster.",
+  "th.w.balancing": "Orekatze-mahaia: aldatu C, aplikatu heuristiko bat edo mugitu atazak eskuz",
+  "th.w.cpm": "CPM simulatzailea: aldatu iraupenak eta ikusi bide kritikoa eta holgurak",
+  "th.w.balancingOk": "Baliozkoa: N = {n}, η = {e}, denbora hila = {i} {u}",
+  "th.w.incomplete": "Ataza guztiak esleitu arte, ez dago emaitzarik.",
+  "wk.toTheory": "→ teoria"
 }

@@ -36,7 +36,25 @@ export interface WStep {
   careful?: string;
   /** draw the exercise's figures under this step */
   figures?: boolean;
+  /** theory topic for the "why" layer */
+  topic?: string;
 }
+
+/** Theory topic of each explanation (only topics that exist are linked). */
+const TOPIC: Record<string, string> = {
+  precedence: 'precedence',
+  cycleTime: 'lines',
+  nMin: 'balancing',
+  'assignment.rule': 'balancing',
+  'assignment.free': 'balancing',
+  stationTimes: 'efficiency',
+  idle: 'efficiency',
+  efficiency: 'efficiency',
+  'efficiency.station': 'efficiency',
+  cpmTable: 'floats',
+  criticalPath: 'cpm',
+  duration: 'cpm',
+};
 
 /** Explanation key of an ask: its kind plus what distinguishes it. */
 export function variant(ex: Exercise, ask: Ask): string {
@@ -127,7 +145,14 @@ export function buildWorked(ex: Exercise, w: WorkedEntry, t: T): WStep[] {
     const v = variant(ex, ask);
     const why = has(t, `wk.why.${v}`);
     const careful = has(t, `wk.careful.${v}`);
-    steps.push({ key: ask.id, title: askLabel(ask, t), what: solutionLines(ex, ask, t), ...(why ? { why } : {}), ...(careful ? { careful } : {}) });
+    steps.push({
+      key: ask.id,
+      title: askLabel(ask, t),
+      what: solutionLines(ex, ask, t),
+      ...(why ? { why } : {}),
+      ...(careful ? { careful } : {}),
+      ...(TOPIC[v] ? { topic: TOPIC[v] } : {}),
+    });
   }
   if (w.extra === 'compareHeuristics') steps.push(compareStep(ex, t));
   if (w.extra === 'gantt') steps.push(ganttStep(ex, t));

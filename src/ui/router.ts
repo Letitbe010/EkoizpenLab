@@ -5,7 +5,8 @@
  *   #/praktika/<template>/<level>/seed/<n>   → generated exercise
  *   #/praktika/pool/<id>                     → pool exercise
  *   #/ebatziak, #/ebatziak/<id>              → worked exercises
- *   #/teoria, #/aurrerapena                  → later phases
+ *   #/teoria, #/teoria/<id>                  → theory
+ *   #/aurrerapena                            → progress (phase 8)
  */
 import { useEffect, useState } from 'react';
 
@@ -16,7 +17,9 @@ export type Route =
   | { name: 'pool'; id: string }
   | { name: 'worked' }
   | { name: 'workedItem'; id: string }
-  | { name: 'soon'; section: 'teoria' | 'aurrerapena' };
+  | { name: 'theory' }
+  | { name: 'theoryTopic'; id: string }
+  | { name: 'soon'; section: 'aurrerapena' };
 
 export function parseHash(hash: string): Route {
   const p = hash.replace(/^#\/?/, '').split('/').filter(Boolean).map(decodeURIComponent);
@@ -27,7 +30,8 @@ export function parseHash(hash: string): Route {
     return { name: 'practice' };
   }
   if (p[0] === 'ebatziak') return p[1] ? { name: 'workedItem', id: p[1] } : { name: 'worked' };
-  if (p[0] === 'teoria' || p[0] === 'aurrerapena') return { name: 'soon', section: p[0] };
+  if (p[0] === 'teoria') return p[1] ? { name: 'theoryTopic', id: p[1] } : { name: 'theory' };
+  if (p[0] === 'aurrerapena') return { name: 'soon', section: p[0] };
   return { name: 'start' };
 }
 
@@ -43,6 +47,10 @@ export function hrefOf(r: Route): string {
       return '#/ebatziak';
     case 'workedItem':
       return `#/ebatziak/${encodeURIComponent(r.id)}`;
+    case 'theory':
+      return '#/teoria';
+    case 'theoryTopic':
+      return `#/teoria/${encodeURIComponent(r.id)}`;
     case 'soon':
       return `#/${r.section}`;
     default:

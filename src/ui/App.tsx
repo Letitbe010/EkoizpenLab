@@ -1,8 +1,12 @@
-import { useEffect, useState } from 'react';
+import { Suspense, lazy, useEffect, useState } from 'react';
 import { type Lang, LangContext, translate } from '../i18n';
 import { PracticeExercise } from './PracticeExercise';
 import { PracticeHome } from './PracticeHome';
 import { WorkedItem, WorkedList } from './WorkedView';
+
+// theory (KaTeX + texts) is loaded only when opened
+const TheoryList = lazy(() => import('./theory/TheoryView').then((m) => ({ default: m.TheoryList })));
+const TheoryTopic = lazy(() => import('./theory/TheoryView').then((m) => ({ default: m.TheoryTopic })));
 import { type Route, useRoute } from './router';
 import { loadLang, saveLang } from './store';
 
@@ -18,10 +22,11 @@ const NAV: { key: string; section: Exclude<Section, 'home'>; icon: string }[] = 
 const TOPICS = ['balancing', 'cpm', 'pert', 'johnson'] as const;
 const STEPS = ['theory', 'worked', 'practice', 'exam'] as const;
 
-const sectionOf = (r: Route): Section => (r.name === 'start' ? 'home' : r.name === 'soon' ? r.section : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : 'praktika');
+const sectionOf = (r: Route): Section =>
+  r.name === 'start' ? 'home' : r.name === 'soon' ? r.section : r.name === 'worked' || r.name === 'workedItem' ? 'ebatziak' : r.name === 'theory' || r.name === 'theoryTopic' ? 'teoria' : 'praktika';
 
 const COMMIT = (import.meta.env.VITE_COMMIT as string | undefined)?.slice(0, 7) ?? 'dev';
-const VERSION = 'v0.6.0';
+const VERSION = 'v0.7.0-a';
 
 export function App() {
   const [lang, setLang] = useState<Lang>(loadLang);
@@ -83,6 +88,10 @@ export function App() {
             {route.name === 'pool' && <PracticeExercise key={route.id} source={{ kind: 'pool', id: route.id }} />}
             {route.name === 'worked' && <WorkedList />}
             {route.name === 'workedItem' && <WorkedItem key={route.id} id={route.id} />}
+            <Suspense fallback={<p className="note">…</p>}>
+              {route.name === 'theory' && <TheoryList />}
+              {route.name === 'theoryTopic' && <TheoryTopic key={route.id} id={route.id} />}
+            </Suspense>
             {route.name === 'start' && (
               <section className="card">
                 <h1>{t('home.title')}</h1>
